@@ -1,0 +1,1100 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Modular-Pets API",
+    "description": "Modular-Pets API Documentation",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Pet",
+      "description": "Pet module endpoints"
+    },
+    {
+      "name": "Health",
+      "description": "Health endpoints"
+    }
+  ],
+  "paths": {
+    "/pet/pets": {
+      "post": {
+        "parameters": [],
+        "operationId": "postPetPets",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    },
+                    "birthdate": {
+                      "type": "string"
+                    },
+                    "observations": {
+                      "anyOf": [
+                        {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sex": {
+                      "anyOf": [
+                        {
+                          "const": "MALE",
+                          "type": "string"
+                        },
+                        {
+                          "const": "FEMALE",
+                          "type": "string"
+                        },
+                        {
+                          "const": "UNKNOWN",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "breedId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "speciesId": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "birthdate",
+                    "observations",
+                    "sex",
+                    "breedId",
+                    "speciesId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breedId",
+                  "speciesId"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breedId",
+                  "speciesId"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breedId",
+                  "speciesId"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "anyOf": [
+                {
+                  "format": "integer",
+                  "default": 0,
+                  "type": "string"
+                },
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              ]
+            },
+            "in": "query",
+            "name": "page",
+            "required": true
+          },
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "anyOf": [
+                {
+                  "format": "integer",
+                  "default": 0,
+                  "type": "string"
+                },
+                {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "integer"
+                }
+              ]
+            },
+            "in": "query",
+            "name": "pageSize",
+            "required": true
+          }
+        ],
+        "operationId": "getPetPets",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "pets",
+                    "total"
+                  ],
+                  "properties": {
+                    "pets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "name": {
+                            "maxLength": 255,
+                            "type": "string"
+                          },
+                          "birthdate": {
+                            "type": "string"
+                          },
+                          "observations": {
+                            "anyOf": [
+                              {
+                                "maxLength": 1024,
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "sex": {
+                            "anyOf": [
+                              {
+                                "const": "MALE",
+                                "type": "string"
+                              },
+                              {
+                                "const": "FEMALE",
+                                "type": "string"
+                              },
+                              {
+                                "const": "UNKNOWN",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "breedId": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "speciesId": {
+                            "format": "uuid",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "birthdate",
+                          "observations",
+                          "sex",
+                          "breedId",
+                          "speciesId"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of pets in the database",
+                      "example": 100
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pet/pets/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "getPetPetsById",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    },
+                    "birthdate": {
+                      "type": "string"
+                    },
+                    "observations": {
+                      "anyOf": [
+                        {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sex": {
+                      "anyOf": [
+                        {
+                          "const": "MALE",
+                          "type": "string"
+                        },
+                        {
+                          "const": "FEMALE",
+                          "type": "string"
+                        },
+                        {
+                          "const": "UNKNOWN",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "breedId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "speciesId": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "birthdate",
+                    "observations",
+                    "sex",
+                    "breedId",
+                    "speciesId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pet/breeds": {
+      "post": {
+        "parameters": [],
+        "operationId": "postPetBreeds",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "speciesId": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "speciesId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "speciesId"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "speciesId"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "speciesId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pet/species": {
+      "post": {
+        "parameters": [],
+        "operationId": "postPetSpecies",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/patients": {
+      "post": {
+        "parameters": [],
+        "operationId": "postHealthPatients",
+        "tags": [
+          "Health"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "medicalObservations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breed": {
+                    "type": "string"
+                  },
+                  "specie": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breed",
+                  "specie"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "medicalObservations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breed": {
+                    "type": "string"
+                  },
+                  "specie": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breed",
+                  "specie"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "medicalObservations": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "breed": {
+                    "type": "string"
+                  },
+                  "specie": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "birthdate",
+                  "sex",
+                  "breed",
+                  "specie"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/auth/users/register": {
+      "post": {
+        "parameters": [],
+        "operationId": "postAuthUsersRegister",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register a new user and return a JWT token for authentication.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  },
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "name",
+                  "birthdate"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  },
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "name",
+                  "birthdate"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  },
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "name",
+                  "birthdate"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered and token generated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "birthdate": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "username",
+                        "email"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "The JWT authentication token."
+                    },
+                    "expiresIn": {
+                      "type": "integer",
+                      "description": "The expiration time of the token in seconds."
+                    }
+                  },
+                  "required": [
+                    "user",
+                    "token",
+                    "expiresIn"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User already exists"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "UserAlreadyExistsError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/users/login": {
+      "post": {
+        "parameters": [],
+        "operationId": "postAuthUsersLogin",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Login user and retrieve an authentication token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "format": "email",
+                    "type": "string"
+                  },
+                  "password": {
+                    "minLength": 8,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login and token generation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "The JWT authentication token."
+                    },
+                    "expiresIn": {
+                      "type": "integer",
+                      "description": "The expiration time of the token in seconds."
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "expiresIn"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials provided.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid credentials"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "InvalidCredentialsError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
