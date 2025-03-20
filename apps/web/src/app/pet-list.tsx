@@ -45,6 +45,9 @@ const PetList = () => {
             <p>{pet.sex}</p>
             <p>{pet.birthdate}</p>
             <p>{pet.observations}</p>
+            {pet.images.map((image) => (
+              <img key={image.id} src={image.src} alt={image.id} />
+              ))}
           </article>
         ))}
       </div>

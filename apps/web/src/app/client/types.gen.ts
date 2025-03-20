@@ -10,6 +10,13 @@ export type GetPetPetsData = {
     url: '/pet/pets';
 };
 
+export type GetPetPetsErrors = {
+    /**
+     * Validation Error
+     */
+    422: unknown;
+};
+
 export type GetPetPetsResponses = {
     /**
      * Success
@@ -23,6 +30,11 @@ export type GetPetPetsResponses = {
             sex: 'MALE' | 'FEMALE' | 'UNKNOWN';
             breedId: string;
             speciesId: string;
+        } & {
+            images: Array<{
+                id: string;
+                src: string;
+            }>;
         }>;
         /**
          * Total number of pets in the database
@@ -47,6 +59,35 @@ export type PostPetPetsData = {
     url: '/pet/pets';
 };
 
+export type PostPetPetsErrors = {
+    /**
+     * Bad Request
+     */
+    400: {
+        name: 'SpecieNotFoundError';
+        message: 'Specie not found';
+    } | {
+        name: 'BreedNotFoundError';
+        message: 'Breed not found';
+    } | {
+        name: 'InvalidBreedSpecieError';
+        message: 'Breed does not belong to the specified specie';
+    };
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+    /**
+     * Validation Error
+     */
+    422: unknown;
+};
+
+export type PostPetPetsError = PostPetPetsErrors[keyof PostPetPetsErrors];
+
 export type PostPetPetsResponses = {
     /**
      * Success
@@ -59,6 +100,11 @@ export type PostPetPetsResponses = {
         sex: 'MALE' | 'FEMALE' | 'UNKNOWN';
         breedId: string;
         speciesId: string;
+    } & {
+        images: Array<{
+            id: string;
+            src: string;
+        }>;
     };
 };
 
@@ -73,6 +119,22 @@ export type GetPetPetsByIdData = {
     url: '/pet/pets/{id}';
 };
 
+export type GetPetPetsByIdErrors = {
+    /**
+     * Pet not found
+     */
+    404: {
+        name: 'PetNotFoundError';
+        message: 'Pet not found';
+    };
+    /**
+     * Validation Error
+     */
+    422: unknown;
+};
+
+export type GetPetPetsByIdError = GetPetPetsByIdErrors[keyof GetPetPetsByIdErrors];
+
 export type GetPetPetsByIdResponses = {
     /**
      * Success
@@ -85,10 +147,63 @@ export type GetPetPetsByIdResponses = {
         sex: 'MALE' | 'FEMALE' | 'UNKNOWN';
         breedId: string;
         speciesId: string;
+    } & {
+        images: Array<{
+            id: string;
+            src: string;
+        }>;
     };
 };
 
 export type GetPetPetsByIdResponse = GetPetPetsByIdResponses[keyof GetPetPetsByIdResponses];
+
+export type PostPetPetsByIdImagesData = {
+    body: {
+        image: Blob | File;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/pet/pets/{id}/images';
+};
+
+export type PostPetPetsByIdImagesErrors = {
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+    /**
+     * Pet not found
+     */
+    404: {
+        name: 'PetNotFoundError';
+        message: 'Pet not found';
+    };
+    /**
+     * Validation Error
+     */
+    422: unknown;
+};
+
+export type PostPetPetsByIdImagesError = PostPetPetsByIdImagesErrors[keyof PostPetPetsByIdImagesErrors];
+
+export type PostPetPetsByIdImagesResponses = {
+    /**
+     * Success
+     */
+    201: {
+        id: string;
+        src: string;
+        ownerId: string;
+        ownerType: string;
+    };
+};
+
+export type PostPetPetsByIdImagesResponse = PostPetPetsByIdImagesResponses[keyof PostPetPetsByIdImagesResponses];
 
 export type PostPetBreedsData = {
     body: {
@@ -100,11 +215,35 @@ export type PostPetBreedsData = {
     url: '/pet/breeds';
 };
 
+export type PostPetBreedsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+    /**
+     * Breed already exists
+     */
+    409: {
+        name: 'BreedAlreadyExistsError';
+        message: 'Breed already exists';
+    };
+    /**
+     * Validation error
+     */
+    422: unknown;
+};
+
+export type PostPetBreedsError = PostPetBreedsErrors[keyof PostPetBreedsErrors];
+
 export type PostPetBreedsResponses = {
     /**
      * Success
      */
     200: {
+        id: string;
         name: string;
         speciesId: string;
     };
@@ -120,6 +259,29 @@ export type PostPetSpeciesData = {
     query?: never;
     url: '/pet/species';
 };
+
+export type PostPetSpeciesErrors = {
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+    /**
+     * Specie already exists
+     */
+    409: {
+        name: 'SpecieNotFoundError';
+        message: 'Specie not found';
+    };
+    /**
+     * Validation Error
+     */
+    422: unknown;
+};
+
+export type PostPetSpeciesError = PostPetSpeciesErrors[keyof PostPetSpeciesErrors];
 
 export type PostPetSpeciesResponses = {
     /**
@@ -147,9 +309,38 @@ export type PostHealthPatientsData = {
     url: '/health/patients';
 };
 
-export type PostHealthPatientsResponses = {
-    200: unknown;
+export type PostHealthPatientsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+    /**
+     * Validation Error
+     */
+    422: unknown;
 };
+
+export type PostHealthPatientsError = PostHealthPatientsErrors[keyof PostHealthPatientsErrors];
+
+export type PostHealthPatientsResponses = {
+    /**
+     * Success
+     */
+    201: {
+        id: string;
+        name: string;
+        birthdate: string;
+        medicalObservations: string | null;
+        sex: 'MALE' | 'FEMALE' | 'UNKNOWN';
+        breed: string;
+        specie: string;
+    };
+};
+
+export type PostHealthPatientsResponse = PostHealthPatientsResponses[keyof PostHealthPatientsResponses];
 
 export type PostAuthUsersRegisterData = {
     body: {
@@ -168,9 +359,13 @@ export type PostAuthUsersRegisterErrors = {
      * User already exists
      */
     409: {
-        message?: string;
-        name?: string;
+        name: 'UserAlreadyExistsError';
+        message: 'User already exists';
     };
+    /**
+     * Validation Error
+     */
+    422: unknown;
 };
 
 export type PostAuthUsersRegisterError = PostAuthUsersRegisterErrors[keyof PostAuthUsersRegisterErrors];
@@ -182,9 +377,9 @@ export type PostAuthUsersRegisterResponses = {
     201: {
         user: {
             id: string;
-            name?: string;
+            name: string;
             email: string;
-            birthdate?: string;
+            birthdate: string;
         };
         /**
          * The JWT authentication token.
@@ -214,9 +409,13 @@ export type PostAuthUsersLoginErrors = {
      * Invalid credentials provided.
      */
     401: {
-        message?: string;
-        name?: string;
+        name: 'InvalidCredentialsError';
+        message: 'Invalid credentials';
     };
+    /**
+     * Validation Error
+     */
+    422: unknown;
 };
 
 export type PostAuthUsersLoginError = PostAuthUsersLoginErrors[keyof PostAuthUsersLoginErrors];
@@ -238,6 +437,34 @@ export type PostAuthUsersLoginResponses = {
 };
 
 export type PostAuthUsersLoginResponse = PostAuthUsersLoginResponses[keyof PostAuthUsersLoginResponses];
+
+export type PostAuthUsersLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/users/logout';
+};
+
+export type PostAuthUsersLogoutErrors = {
+    /**
+     * Unauthorized
+     */
+    401: {
+        name: 'Unauthorized';
+        message: 'Unauthorized';
+    };
+};
+
+export type PostAuthUsersLogoutError = PostAuthUsersLogoutErrors[keyof PostAuthUsersLogoutErrors];
+
+export type PostAuthUsersLogoutResponses = {
+    /**
+     * Success
+     */
+    204: void;
+};
+
+export type PostAuthUsersLogoutResponse = PostAuthUsersLogoutResponses[keyof PostAuthUsersLogoutResponses];
 
 export type ClientOptions = {
     baseUrl: `${string}://swagger.json` | (string & {});
