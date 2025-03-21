@@ -1,8 +1,7 @@
-import React from 'react'
-import { Pet } from './types/pet'
-
+import React from "react";
+import { Pet } from "./types/pet";
 interface PetItem {
-  pet: Pet
+  pet: Pet;
 }
 
 const PetItem = ({ pet }: PetItem) => {
@@ -16,7 +15,7 @@ const PetItem = ({ pet }: PetItem) => {
         <img key={image.id} src={image.src} alt={pet.name} />
       ))}
     </article>
-  )
-}
+  );
+};
 
-export default PetItem
+export default PetItem;

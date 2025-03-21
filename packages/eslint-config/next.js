@@ -5,6 +5,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import pluginPrettier from "eslint-plugin-prettier"; // Add this
 import { config as baseConfig } from "./base.js";
 
 /**
@@ -42,8 +43,15 @@ export const nextJsConfig = [
     settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
+      "react/react-in-jsx-scope": "off", // React scope no longer necessary with new JSX transform.
+    },
+  },
+  {
+    plugins: {
+      "prettier": pluginPrettier,
+    },
+    rules: {
+      "prettier/prettier": ["error"], // Enforce Prettier formatting
     },
   },
 ];
