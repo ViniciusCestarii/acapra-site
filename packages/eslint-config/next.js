@@ -51,7 +51,12 @@ export const nextJsConfig = [
       "prettier": pluginPrettier,
     },
     rules: {
-      "prettier/prettier": ["error"], // Enforce Prettier formatting
+      "prettier/prettier": [ // Enforce Prettier formating
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
     },
-  },
+  }
 ];
