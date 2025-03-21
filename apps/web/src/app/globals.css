@@ -7,7 +7,7 @@
 :root  {
   --radius: 0.625rem;
   --background: hsl(259 100% 95%);
-  --foreground: hsl(259 5% 0%);
+  --foreground: hsl(232, 63%, 20%);
   --card: hsl(259 50% 90%);
   --card-foreground: hsl(259 5% 10%);
   --popover: hsl(259 100% 95%);
@@ -50,6 +50,7 @@
 
 
 @theme inline {
+  --font-nunito: Nunito, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -90,8 +91,5 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

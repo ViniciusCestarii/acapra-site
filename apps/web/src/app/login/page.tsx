@@ -7,8 +7,8 @@ const LoginPage = () => {
       <div className="col-span-2 bg-secondary flex justify-center rounded-lg py-16 px-8">
         <AcapraLogo />
       </div>
-      <div className="col-span-3 flex flex-col items-center justify-center">
-        <h1 className="text-6xl font-semibold">Boas-vindas!</h1>
+      <div className="col-span-3 flex flex-col justify-center">
+        <h1 className="text-6xl font-semibold font-nunito">Boas-vindas!</h1>
         <input></input>
         <input></input>
       </div>

@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import { TanstackQueryProvider } from "./context/tanstack-query";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const nunito = Nunito({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  weight: ["300", "400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -25,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <TanstackQueryProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <body
+          className={`${nunito.variable} antialiased text-foreground bg-background`}
+        >
           {children}
         </body>
       </TanstackQueryProvider>
