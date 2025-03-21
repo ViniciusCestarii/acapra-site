@@ -6,7 +6,7 @@ import { TanstackQueryProvider } from "./context/tanstack-query";
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
-  weight: ["300", "400", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <TanstackQueryProvider>
         <body
-          className={`${nunito.variable} antialiased text-foreground bg-background`}
+          className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
         >
           {children}
         </body>

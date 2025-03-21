@@ -23,7 +23,7 @@
   --destructive: hsl(0 100% 30%);
   --destructive-foreground: hsl(259 5% 90%);
   --border: hsl(259 30% 50%);
-  --input: hsl(259 30% 18%);
+  --input: hsl(259, 56%, 41%);
   --ring: hsl(259 52.2% 48.4%);
 }
 .dark  {

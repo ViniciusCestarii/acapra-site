@@ -1,8 +1,15 @@
 import React from "react";
 
-const Pets = () => {
+interface PetsProps extends React.ComponentProps<"svg"> {}
+
+const Pets = (props: PetsProps) => {
   return (
-    <svg viewBox="0 0 384 195" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      {...props}
+      viewBox="0 0 384 195"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g clipPath="url(#clip0_1213_221)">
         <path
           d="M59.4501 55.6731C58.5207 42.7233 61.028 24.8859 63.2056 24.6138C65.2644 24.363 73.4184 36.6459 76.9361 42.115C72.851 43.0167 69.3333 45.706 66.2154 48.3365C63.6595 50.5455 61.363 52.9839 59.4501 55.6678V55.6731Z"
