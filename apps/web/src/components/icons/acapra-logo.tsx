@@ -1,10 +1,10 @@
 import React from "react";
+interface AcapraLogoProps extends React.ComponentProps<"svg"> {}
 
-const AcapraLogo = () => {
+const AcapraLogo = (props: AcapraLogoProps) => {
   return (
     <svg
-      width="119"
-      height="128"
+      {...props}
       viewBox="0 0 119 128"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

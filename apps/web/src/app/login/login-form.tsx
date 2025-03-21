@@ -2,7 +2,7 @@
 
 import ShowHideInput from "@/components/ui/show-hide-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,13 +16,18 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { z } from "zod";
+import { postAuthUsersLogin, PostAuthUsersLoginErrors } from "../client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Email inválido"),
-  password: z.string().min(5, "Senha deve ter no mínimo 5 caracteres"),
+  password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres"),
 });
 
 const LoginForm = () => {
+  const router = useRouter();
+  const [isSubmiting, startSubmit] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +36,37 @@ const LoginForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    startSubmit(async () => {
+      const result = await postAuthUsersLogin({
+        body: values,
+      });
+
+      if (result.error) {
+        if (
+          result.response.status === 401 &&
+          (result.error as PostAuthUsersLoginErrors["401"]).name ===
+            "InvalidCredentialsError"
+        ) {
+          form.setError("email", {
+            type: "invalid",
+            message: "Email ou senha inválidos",
+          });
+          form.setError("password", {
+            type: "invalid",
+            message: "Email ou senha inválidos",
+          });
+        } else {
+          toast.error(
+            "Erro inesperado. Tente novamente mais tarde ou entre em contato com o suporte.",
+          );
+        }
+
+        return;
+      }
+
+      router.push("/");
+    });
   }
 
   return (
@@ -71,7 +105,11 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="py-8 w-full text-lg font-bold">
+        <Button
+          type="submit"
+          disabled={isSubmiting}
+          className="py-8 w-full text-lg font-bold"
+        >
           Login
         </Button>
       </form>

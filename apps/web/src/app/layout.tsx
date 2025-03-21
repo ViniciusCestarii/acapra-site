@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { TanstackQueryProvider } from "./context/tanstack-query";
 
 const nunito = Nunito({
@@ -26,6 +27,7 @@ export default function RootLayout({
           className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
         >
           {children}
+          <Toaster />
         </body>
       </TanstackQueryProvider>
     </html>
