@@ -1,0 +1,26 @@
+name: 'Build check'
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.2
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build Application
+        run: bun run build
