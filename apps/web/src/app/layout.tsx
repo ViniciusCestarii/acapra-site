@@ -3,6 +3,8 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { TanstackQueryProvider } from "./context/tanstack-query";
+import OpenapiTs from "./context/openapi-ts";
+import ClientOpenapiTs from "./context/client-openapi-ts";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -22,14 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <TanstackQueryProvider>
-        <body
-          className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
-        >
-          {children}
-          <Toaster />
-        </body>
-      </TanstackQueryProvider>
+      <OpenapiTs>
+        <ClientOpenapiTs>
+          <TanstackQueryProvider>
+            <body
+              className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
+            >
+              {children}
+              <Toaster />
+            </body>
+          </TanstackQueryProvider>
+        </ClientOpenapiTs>
+      </OpenapiTs>
     </html>
   );
 }
