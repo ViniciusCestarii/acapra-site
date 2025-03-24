@@ -78,6 +78,17 @@
                             }
                           ]
                         },
+                        "mainImageId": {
+                          "anyOf": [
+                            {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
                         "breedId": {
                           "format": "uuid",
                           "type": "string"
@@ -93,6 +104,7 @@
                         "birthdate",
                         "observations",
                         "sex",
+                        "mainImageId",
                         "breedId",
                         "speciesId"
                       ]
@@ -253,6 +265,10 @@
                       }
                     ]
                   },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
                   "breedId": {
                     "format": "uuid",
                     "type": "string"
@@ -302,6 +318,10 @@
                       }
                     ]
                   },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
                   "breedId": {
                     "format": "uuid",
                     "type": "string"
@@ -350,6 +370,10 @@
                         "type": "string"
                       }
                     ]
+                  },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
                   },
                   "breedId": {
                     "format": "uuid",
@@ -481,6 +505,17 @@
                                   }
                                 ]
                               },
+                              "mainImageId": {
+                                "anyOf": [
+                                  {
+                                    "format": "uuid",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
                               "breedId": {
                                 "format": "uuid",
                                 "type": "string"
@@ -496,6 +531,7 @@
                               "birthdate",
                               "observations",
                               "sex",
+                              "mainImageId",
                               "breedId",
                               "speciesId"
                             ]
@@ -614,6 +650,17 @@
                             }
                           ]
                         },
+                        "mainImageId": {
+                          "anyOf": [
+                            {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
                         "breedId": {
                           "format": "uuid",
                           "type": "string"
@@ -629,6 +676,7 @@
                         "birthdate",
                         "observations",
                         "sex",
+                        "mainImageId",
                         "breedId",
                         "speciesId"
                       ]
