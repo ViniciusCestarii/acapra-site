@@ -79,7 +79,11 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} autoComplete="email" className="px-4 py-8" />
+                <Input
+                  {...field}
+                  autoComplete="email"
+                  className="px-4 py-8 md:text-base text-base"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +99,7 @@ const LoginForm = () => {
                 <ShowHideInput
                   {...field}
                   autoComplete="current-password"
-                  className="px-4 py-8 pr-14"
+                  className="px-4 py-8 md:text-base text-base pr-14"
                   iconProps={{
                     className: "w-14",
                   }}
