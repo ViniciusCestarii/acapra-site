@@ -3,7 +3,10 @@ import { defaultPlugins } from "@hey-api/openapi-ts";
 
 export default defineConfig({
   input: "swagger.json",
-  output: "src/app/client",
+  output: {
+    path: "src/app/client",
+    format: "prettier",
+  },
   plugins: [
     ...defaultPlugins,
     "@hey-api/client-fetch",
