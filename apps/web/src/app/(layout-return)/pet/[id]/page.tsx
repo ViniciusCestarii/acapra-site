@@ -4,9 +4,41 @@ import { Pet } from "@/types/pet";
 import { notFound } from "next/navigation";
 import React from "react";
 import PetSexIcon from "./pet-sex-icon";
+import { Metadata } from "next";
 
 interface PetPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PetPageProps): Promise<Metadata> {
+  const { id } = await params;
+
+  const result = await getPetPetsById({
+    path: {
+      id,
+    },
+  });
+
+  if (result.error) {
+    return notFound();
+  }
+
+  const pet = result.data!;
+
+  const images: Pet["images"] = pet.images.sort((a) =>
+    a.id === pet.mainImageId ? -1 : 1,
+  );
+
+  return {
+    title: `${pet.name} - Acapra Adoção`,
+    openGraph: {
+      title: pet.name,
+      description: pet.observations ?? undefined,
+      images: images.map((img) => ({ url: img.src })),
+    },
+  };
 }
 
 const PetPage = async ({ params }: PetPageProps) => {
@@ -28,8 +60,8 @@ const PetPage = async ({ params }: PetPageProps) => {
 
   return (
     <>
-      <p className="text-center py-4">Seu novo amigo</p>
-      <div className="rounded-lg bg-white mx-10 space-y-6">
+      <p className="text-center pb-4">Seu novo amigo</p>
+      <div className="rounded-lg bg-white space-y-6">
         <PetProfileAvatar
           pet={pet}
           avatarProps={{

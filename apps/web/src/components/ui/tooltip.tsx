@@ -78,11 +78,6 @@ const Tip = ({
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
             onTouchStart={() => setOpen(!open)}
-            onKeyDown={(e) => {
-              e.preventDefault();
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              e.key === "Enter" && setOpen(!open);
-            }}
           >
             {children}
           </button>
