@@ -7,7 +7,7 @@ import PetItem from "./pet-item";
 import { Button } from "@/components/ui/button";
 
 const PetList = () => {
-  const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState({ page: 1, pageSize: 9 });
 
   const { data, isLoading, error } = useQuery({
     ...getPetPetsOptions({
@@ -36,7 +36,7 @@ const PetList = () => {
     <section>
       <Button onClick={decrementPage}>Previous Page</Button>
       <Button onClick={incrementPage}>Next Page</Button>
-      <div>
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         {data.pets.map((pet) => (
           <PetItem key={pet.id} pet={pet} />
         ))}
