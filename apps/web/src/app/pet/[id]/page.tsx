@@ -37,7 +37,7 @@ const PetPage = async ({ params }: PetPageProps) => {
           }}
         />
         <div className="px-4 space-y-6">
-          {petImages.length && (
+          {!!petImages.length && (
             <div className="grid grid-cols-4 gap-4">
               {petImages.map((img) => {
                 if (img.id.startsWith("padding-"))
@@ -61,12 +61,7 @@ const PetPage = async ({ params }: PetPageProps) => {
           <div className="flex flex-col space-y-4">
             <h1 className="font-bold text-5xl leading-9 flex items-end">
               {pet.name}
-              <PetSexIcon
-                sex={pet.sex}
-                iconProps={{
-                  className: "size-5 ml-1",
-                }}
-              />
+              <PetSexIcon sex={pet.sex} className="size-5 ml-1" />
             </h1>
             <p className="break-words">{pet.observations}</p>
           </div>

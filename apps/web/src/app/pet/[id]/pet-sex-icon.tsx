@@ -1,17 +1,43 @@
 import { Pet } from "@/app/types/pet";
+import { Tip } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { CircleHelp, Mars, Venus } from "lucide-react";
 import React from "react";
 
 interface PetSexIconProps {
   sex: Pet["sex"];
-  iconProps?: React.ComponentProps<typeof Mars>;
+  className?: string;
 }
 
-const PetSexIcon = ({ sex, iconProps }: PetSexIconProps) => {
-  if (sex === "MALE") return <Mars {...iconProps} />;
-  if (sex === "FEMALE") return <Venus {...iconProps} />;
+const PetSexIcon = ({ sex, className }: PetSexIconProps) => {
+  let content;
 
-  return <CircleHelp {...iconProps} />;
+  switch (sex) {
+    case "MALE":
+      content = {
+        icon: <Mars className="w-auto h-auto" />,
+        tooltipContent: "Macho",
+      };
+      break;
+    case "FEMALE":
+      content = {
+        icon: <Venus className="w-auto h-auto" />,
+        tooltipContent: "Fêmea",
+      };
+      break;
+    default:
+      content = {
+        icon: <CircleHelp className="w-auto h-auto" />,
+        tooltipContent: "Sexo desconhecido",
+      };
+      break;
+  }
+
+  return (
+    <Tip content={content.tooltipContent} className={cn(className, "flex")}>
+      {content.icon}
+    </Tip>
+  );
 };
 
 export default PetSexIcon;
