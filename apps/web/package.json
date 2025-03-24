@@ -10,7 +10,7 @@
     "lint": "next lint --max-warnings 0",
     "lint:fix": "next lint --fix",
     "check-types": "tsc --noEmit",
-    "openapi-ts": "openapi-ts"
+    "openapi-ts": "openapi-ts && bun scripts/add-cache-client.ts && eslint --fix src/client/sdk.gen.ts"
   },
   "dependencies": {
     "@hey-api/client-fetch": "0.8.3",
