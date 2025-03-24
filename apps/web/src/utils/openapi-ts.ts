@@ -1,4 +1,4 @@
-import { client } from "../app/client/client.gen";
+import { client } from "../client/client.gen";
 
 export const setOpenApiTsConfig = () => {
   client.setConfig({

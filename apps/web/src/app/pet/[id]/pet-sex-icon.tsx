@@ -1,4 +1,4 @@
-import { Pet } from "@/app/types/pet";
+import { Pet } from "@/types/pet";
 import { Tip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { CircleHelp, Mars, Venus } from "lucide-react";

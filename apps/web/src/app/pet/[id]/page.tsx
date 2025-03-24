@@ -1,6 +1,6 @@
-import { getPetPetsById } from "@/app/client";
+import { getPetPetsById } from "@/client";
 import { PetAvatar, PetProfileAvatar } from "@/app/pet-item";
-import { Pet } from "@/app/types/pet";
+import { Pet } from "@/types/pet";
 import { notFound } from "next/navigation";
 import React from "react";
 import PetSexIcon from "./pet-sex-icon";

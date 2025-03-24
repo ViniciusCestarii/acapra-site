@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getPetPetsOptions } from "./client/@tanstack/react-query.gen";
+import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
 import { Button } from "@/components/ui/button";

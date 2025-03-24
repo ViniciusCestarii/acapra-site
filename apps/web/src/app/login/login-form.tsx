@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { z } from "zod";
-import { postAuthUsersLogin, PostAuthUsersLoginErrors } from "../client";
+import { postAuthUsersLogin, PostAuthUsersLoginErrors } from "../../client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

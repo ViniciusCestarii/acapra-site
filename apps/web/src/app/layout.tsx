@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { TanstackQueryProvider } from "./context/tanstack-query";
-import OpenapiTs from "./context/openapi-ts";
-import ClientOpenapiTs from "./context/client-openapi-ts";
+import { TanstackQueryProvider } from "../context/tanstack-query";
+import OpenapiTs from "../context/openapi-ts";
+import ClientOpenapiTs from "../context/client-openapi-ts";
 
 const nunito = Nunito({
   subsets: ["latin"],
