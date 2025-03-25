@@ -75,6 +75,8 @@ const Tip = ({
           <button
             className={cn(className)}
             onClick={() => setOpen(!open)}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setOpen(false)}
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
             onTouchStart={() => setOpen(!open)}
