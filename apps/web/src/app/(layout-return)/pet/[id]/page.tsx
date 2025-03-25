@@ -93,7 +93,7 @@ const PetPage = async ({ params }: PetPageProps) => {
           <div className="flex flex-col space-y-4">
             <h1 className="font-bold text-5xl leading-9 flex items-end">
               {pet.name}
-              <PetSexIcon sex={pet.sex} className="size-5 ml-1" />
+              <PetSexIcon sex={pet.sex} className="size-6 p-1 -mb-1" />
             </h1>
             <p className="break-words">{pet.observations}</p>
           </div>
