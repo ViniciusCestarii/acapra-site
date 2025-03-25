@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
 import { Button } from "@/components/ui/button";
 import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
+import useDelay from "@/hooks/useDelay";
 
 const pageSize = 9;
 
 const PetList = () => {
-  const [showSkeleton, setShowSkeleton] = useState(false);
   const [pagination, setPagination] = useState({ page: 1, pageSize });
 
   const query = useQuery({
@@ -20,11 +20,6 @@ const PetList = () => {
     }),
     placeholderData: keepPreviousData,
   });
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSkeleton(true), 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   const incrementPage = () => {
     const newPage = pagination.page + 1;
@@ -42,7 +37,7 @@ const PetList = () => {
     <section>
       <Button onClick={decrementPage}>Previous Page</Button>
       <Button onClick={incrementPage}>Next Page</Button>
-      <PetListBase {...query} pageSize={pageSize} showSkeleton={showSkeleton} />
+      <PetListBase {...query} pageSize={pageSize} />
     </section>
   );
 };
@@ -55,17 +50,12 @@ interface PetListProps {
     | undefined;
   isLoading: boolean;
   isError: boolean;
-  showSkeleton: boolean;
   pageSize: number;
 }
 
-const PetListBase = ({
-  data,
-  isLoading,
-  isError,
-  pageSize,
-  showSkeleton,
-}: PetListProps) => {
+const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
+  const showSkeleton = useDelay(400);
+
   if (isError) return <div>Ops, ocorreu um erro!</div>;
   if (isLoading)
     return (
