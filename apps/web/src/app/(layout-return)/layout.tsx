@@ -1,8 +1,7 @@
 import AcapraLogo from "@/components/icons/acapra-logo";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import ReturnButton from "./return-button";
 
 const LayoutReturn = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,11 +10,7 @@ const LayoutReturn = ({ children }: { children: React.ReactNode }) => {
         <Link href="/">
           <AcapraLogo small className="sm:h-auto h-7" />
         </Link>
-        <Button asChild size="icon">
-          <Link href="/">
-            <ArrowLeft />
-          </Link>
-        </Button>
+        <ReturnButton />
       </div>
       <div className="sm:ml-14">
         <div className="md:max-w-3xl sm:max-w-2xl sm:mx-auto pb-8 sm:pt-8 px-10">

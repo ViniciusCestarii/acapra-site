@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { Button } from "@/components/ui/button";
 import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,7 +12,11 @@ import useDelay from "@/hooks/useDelay";
 const pageSize = 9;
 
 const PetList = () => {
-  const [pagination, setPagination] = useState({ page: 1, pageSize });
+  const [page, setPage] = useQueryState(
+    "pagina",
+    parseAsInteger.withDefault(1),
+  );
+  const pagination = { page, pageSize };
 
   const query = useQuery({
     ...getPetPetsOptions({
@@ -24,13 +28,13 @@ const PetList = () => {
   const incrementPage = () => {
     const newPage = pagination.page + 1;
     if (!query.data || newPage * pagination.pageSize > query.data.total) return;
-    setPagination({ ...pagination, page: pagination.page + 1 });
+    setPage(page + 1);
   };
 
   const decrementPage = () => {
     const newPage = pagination.page - 1;
     if (newPage < 1) return;
-    setPagination({ ...pagination, page: newPage });
+    setPage(newPage);
   };
 
   return (

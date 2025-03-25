@@ -4,6 +4,7 @@ import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "@/lib/utils";
+import { Slot } from "@radix-ui/react-slot";
 
 function TooltipProvider({
   delayDuration = 0,
@@ -62,17 +63,20 @@ const Tip = ({
   content,
   children,
   className,
+  asChild = false,
 }: React.PropsWithChildren<{
   content: string | React.ReactNode;
   className?: string;
+  asChild?: boolean;
 }>) => {
   const [open, setOpen] = React.useState(false);
+  const Comp = asChild ? Slot : "button";
 
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip open={open}>
         <TooltipTrigger asChild>
-          <button
+          <Comp
             className={cn(className)}
             onClick={() => setOpen(!open)}
             onFocus={() => setOpen(true)}
@@ -82,7 +86,7 @@ const Tip = ({
             onTouchStart={() => setOpen(!open)}
           >
             {children}
-          </button>
+          </Comp>
         </TooltipTrigger>
         <TooltipContent className={!content ? "hidden" : ""}>
           <span className="inline-block">{content}</span>

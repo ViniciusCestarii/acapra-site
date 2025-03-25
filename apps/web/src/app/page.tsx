@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import PetList from "./pet-list";
 
 export default function Home() {
   return (
     <div>
-      <PetList />
+      <Suspense>
+        <PetList />
+      </Suspense>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TanstackQueryProvider } from "../context/tanstack-query";
 import OpenapiTs from "../context/openapi-ts";
 import ClientOpenapiTs from "../context/client-openapi-ts";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -27,12 +28,14 @@ export default function RootLayout({
       <OpenapiTs>
         <ClientOpenapiTs>
           <TanstackQueryProvider>
-            <body
-              className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
-            >
-              {children}
-              <Toaster />
-            </body>
+            <NuqsAdapter>
+              <body
+                className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
+              >
+                {children}
+                <Toaster />
+              </body>
+            </NuqsAdapter>
           </TanstackQueryProvider>
         </ClientOpenapiTs>
       </OpenapiTs>
