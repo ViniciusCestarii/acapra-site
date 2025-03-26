@@ -7,7 +7,11 @@ import {
   getPetPetsById,
   postPetPetsByIdImages,
   postPetBreeds,
+  putPetBreeds,
+  getPetSpeciesByIdBreeds,
+  getPetSpecies,
   postPetSpecies,
+  putPetSpecies,
   postHealthPatients,
   postAuthUsersRegister,
   postAuthUsersLogin,
@@ -33,9 +37,17 @@ import type {
   PostPetBreedsData,
   PostPetBreedsError,
   PostPetBreedsResponse,
+  PutPetBreedsData,
+  PutPetBreedsError,
+  PutPetBreedsResponse,
+  GetPetSpeciesByIdBreedsData,
+  GetPetSpeciesData,
   PostPetSpeciesData,
   PostPetSpeciesError,
   PostPetSpeciesResponse,
+  PutPetSpeciesData,
+  PutPetSpeciesError,
+  PutPetSpeciesResponse,
   PostHealthPatientsData,
   PostHealthPatientsError,
   PostHealthPatientsResponse,
@@ -319,6 +331,65 @@ export const postPetBreedsMutation = (
   return mutationOptions;
 };
 
+export const putPetBreedsMutation = (
+  options?: Partial<Options<PutPetBreedsData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    PutPetBreedsResponse,
+    PutPetBreedsError,
+    Options<PutPetBreedsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putPetBreeds({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getPetSpeciesByIdBreedsQueryKey = (
+  options: Options<GetPetSpeciesByIdBreedsData>,
+) => createQueryKey("getPetSpeciesByIdBreeds", options);
+
+export const getPetSpeciesByIdBreedsOptions = (
+  options: Options<GetPetSpeciesByIdBreedsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getPetSpeciesByIdBreeds({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getPetSpeciesByIdBreedsQueryKey(options),
+  });
+};
+
+export const getPetSpeciesQueryKey = (options?: Options<GetPetSpeciesData>) =>
+  createQueryKey("getPetSpecies", options);
+
+export const getPetSpeciesOptions = (options?: Options<GetPetSpeciesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getPetSpecies({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getPetSpeciesQueryKey(options),
+  });
+};
+
 export const postPetSpeciesQueryKey = (options: Options<PostPetSpeciesData>) =>
   createQueryKey("postPetSpecies", options);
 
@@ -347,6 +418,26 @@ export const postPetSpeciesMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postPetSpecies({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const putPetSpeciesMutation = (
+  options?: Partial<Options<PutPetSpeciesData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    PutPetSpeciesResponse,
+    PutPetSpeciesError,
+    Options<PutPetSpeciesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putPetSpecies({
         ...options,
         ...localOptions,
         throwOnError: true,

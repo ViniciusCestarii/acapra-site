@@ -130,10 +130,51 @@
                               "src"
                             ]
                           }
+                        },
+                        "breed": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            },
+                            "speciesId": {
+                              "format": "uuid",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "speciesId"
+                          ]
+                        },
+                        "specie": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ]
                         }
                       },
                       "required": [
-                        "images"
+                        "images",
+                        "breed",
+                        "specie"
                       ]
                     }
                   ]
@@ -557,10 +598,51 @@
                                     "src"
                                   ]
                                 }
+                              },
+                              "breed": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "format": "uuid",
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "maxLength": 255,
+                                    "type": "string"
+                                  },
+                                  "speciesId": {
+                                    "format": "uuid",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "speciesId"
+                                ]
+                              },
+                              "specie": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "format": "uuid",
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "maxLength": 255,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name"
+                                ]
                               }
                             },
                             "required": [
-                              "images"
+                              "images",
+                              "breed",
+                              "specie"
                             ]
                           }
                         ]
@@ -702,10 +784,51 @@
                               "src"
                             ]
                           }
+                        },
+                        "breed": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            },
+                            "speciesId": {
+                              "format": "uuid",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "speciesId"
+                          ]
+                        },
+                        "specie": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ]
                         }
                       },
                       "required": [
-                        "images"
+                        "images",
+                        "breed",
+                        "specie"
                       ]
                     }
                   ]
@@ -910,7 +1033,7 @@
           "Pet"
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -934,6 +1057,30 @@
                     "id",
                     "name",
                     "speciesId"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Specie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "SpecieNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Specie not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
                   ]
                 }
               }
@@ -1050,6 +1197,277 @@
             }
           }
         }
+      },
+      "put": {
+        "parameters": [],
+        "operationId": "putPetBreeds",
+        "summary": "Update breed",
+        "description": "Update a breed",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    },
+                    "speciesId": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "speciesId"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Specie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "BreedNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Breed not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Breed not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "SpecieNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Specie not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "speciesId"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "speciesId"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "speciesId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "speciesId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pet/species/{id}/breeds": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "getPetSpeciesByIdBreeds",
+        "summary": "Find all breeds by specie",
+        "description": "Find all breeds by specie",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "name": {
+                        "maxLength": 255,
+                        "type": "string"
+                      },
+                      "speciesId": {
+                        "format": "uuid",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "speciesId"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Specie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "SpecieNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Specie not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          }
+        }
       }
     },
     "/pet/species": {
@@ -1062,8 +1480,8 @@
           "Pet"
         ],
         "responses": {
-          "200": {
-            "description": "Success",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1178,6 +1596,188 @@
                 "required": [
                   "name"
                 ]
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [],
+        "operationId": "putPetSpecies",
+        "summary": "Update specie",
+        "description": "Update a specie",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Specie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "SpecieNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Specie not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getPetSpecies",
+        "summary": "Find all species",
+        "description": "Find all species",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "name": {
+                        "maxLength": 255,
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name"
+                    ]
+                  }
+                }
               }
             }
           }

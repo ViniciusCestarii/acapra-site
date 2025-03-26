@@ -22,9 +22,20 @@ import type {
   PostPetBreedsData,
   PostPetBreedsResponse,
   PostPetBreedsError,
+  PutPetBreedsData,
+  PutPetBreedsResponse,
+  PutPetBreedsError,
+  GetPetSpeciesByIdBreedsData,
+  GetPetSpeciesByIdBreedsResponse,
+  GetPetSpeciesByIdBreedsError,
+  GetPetSpeciesData,
+  GetPetSpeciesResponse,
   PostPetSpeciesData,
   PostPetSpeciesResponse,
   PostPetSpeciesError,
+  PutPetSpeciesData,
+  PutPetSpeciesResponse,
+  PutPetSpeciesError,
   PostHealthPatientsData,
   PostHealthPatientsResponse,
   PostHealthPatientsError,
@@ -165,6 +176,67 @@ export const postPetBreeds = cache(
 );
 
 /**
+ * Update breed
+ * Update a breed
+ */
+export const putPetBreeds = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<PutPetBreedsData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).put<
+      PutPetBreedsResponse,
+      PutPetBreedsError,
+      ThrowOnError
+    >({
+      url: "/pet/breeds",
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+  },
+);
+
+/**
+ * Find all breeds by specie
+ * Find all breeds by specie
+ */
+export const getPetSpeciesByIdBreeds = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<GetPetSpeciesByIdBreedsData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).get<
+      GetPetSpeciesByIdBreedsResponse,
+      GetPetSpeciesByIdBreedsError,
+      ThrowOnError
+    >({
+      url: "/pet/species/{id}/breeds",
+      ...options,
+    });
+  },
+);
+
+/**
+ * Find all species
+ * Find all species
+ */
+export const getPetSpecies = cache(
+  <ThrowOnError extends boolean = false>(
+    options?: Options<GetPetSpeciesData, ThrowOnError>,
+  ) => {
+    return (options?.client ?? _heyApiClient).get<
+      GetPetSpeciesResponse,
+      unknown,
+      ThrowOnError
+    >({
+      url: "/pet/species",
+      ...options,
+    });
+  },
+);
+
+/**
  * Create specie
  * Create a new specie
  */
@@ -175,6 +247,29 @@ export const postPetSpecies = cache(
     return (options.client ?? _heyApiClient).post<
       PostPetSpeciesResponse,
       PostPetSpeciesError,
+      ThrowOnError
+    >({
+      url: "/pet/species",
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+  },
+);
+
+/**
+ * Update specie
+ * Update a specie
+ */
+export const putPetSpecies = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<PutPetSpeciesData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).put<
+      PutPetSpeciesResponse,
+      PutPetSpeciesError,
       ThrowOnError
     >({
       url: "/pet/species",
