@@ -84,6 +84,7 @@ const Tip = ({
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
             onTouchStart={() => setOpen(!open)}
+            onTouchEnd={() => setOpen(false)}
           >
             {children}
           </Comp>

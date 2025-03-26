@@ -3,6 +3,7 @@ import { Tip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { CircleHelp, Mars, Venus } from "lucide-react";
 import React from "react";
+import { sexDict } from "@/utils/dict";
 
 interface PetSexIconProps {
   sex: Pet["sex"];
@@ -10,32 +11,23 @@ interface PetSexIconProps {
 }
 
 const PetSexIcon = ({ sex, className }: PetSexIconProps) => {
-  let content;
+  let icon;
 
   switch (sex) {
     case "MALE":
-      content = {
-        icon: <Mars className="w-auto h-auto" />,
-        tooltipContent: "Macho",
-      };
+      icon = <Mars className="w-auto h-auto" />;
       break;
     case "FEMALE":
-      content = {
-        icon: <Venus className="w-auto h-auto" />,
-        tooltipContent: "Fêmea",
-      };
+      icon = <Venus className="w-auto h-auto" />;
       break;
     default:
-      content = {
-        icon: <CircleHelp className="w-auto h-auto" />,
-        tooltipContent: "Sexo desconhecido",
-      };
+      icon = <CircleHelp className="w-auto h-auto" />;
       break;
   }
 
   return (
-    <Tip content={content.tooltipContent} className={cn(className, "flex")}>
-      {content.icon}
+    <Tip content={sexDict[sex]} className={cn(className, "flex")}>
+      {icon}
     </Tip>
   );
 };
