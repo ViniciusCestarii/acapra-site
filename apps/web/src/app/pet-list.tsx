@@ -3,11 +3,13 @@
 import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { Button } from "@/components/ui/button";
 import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const pageSize = 9;
 
@@ -16,11 +18,15 @@ const PetList = () => {
     "pagina",
     parseAsInteger.withDefault(1),
   );
+  const [name, setName] = useQueryState("nome", {
+    throttleMs: 400,
+    ...parseAsString.withDefault(""),
+  });
   const pagination = { page, pageSize };
 
   const query = useQuery({
     ...getPetPetsOptions({
-      query: pagination,
+      query: { ...pagination, name },
     }),
     placeholderData: keepPreviousData,
   });
@@ -38,11 +44,22 @@ const PetList = () => {
   };
 
   return (
-    <section>
-      <Button onClick={decrementPage}>Previous Page</Button>
-      <Button onClick={incrementPage}>Next Page</Button>
-      <PetListBase {...query} pageSize={pageSize} />
-    </section>
+    <main className="flex">
+      <section className="w-xs">
+        <Label htmlFor="name">Nome</Label>
+        <Input
+          value={name}
+          onChange={({ target }) => setName(target.value)}
+          id="name"
+          placeholder="Nome"
+        />
+      </section>
+      <section className="flex-1">
+        <Button onClick={decrementPage}>Previous Page</Button>
+        <Button onClick={incrementPage}>Next Page</Button>
+        <PetListBase {...query} pageSize={pageSize} />
+      </section>
+    </main>
   );
 };
 

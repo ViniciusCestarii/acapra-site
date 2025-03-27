@@ -6,6 +6,12 @@ export type GetPetPetsData = {
   query: {
     page: string | number;
     pageSize: string | number;
+    name?: string;
+    sex?: "MALE" | "FEMALE" | "UNKNOWN";
+    breedId?: string;
+    speciesId?: string;
+    minBirthdate?: string;
+    maxBirthdate?: string;
   };
   url: "/pet/pets";
 };

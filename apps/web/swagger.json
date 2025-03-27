@@ -480,6 +480,71 @@
             "in": "query",
             "name": "pageSize",
             "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "MALE",
+                  "type": "string"
+                },
+                {
+                  "const": "FEMALE",
+                  "type": "string"
+                },
+                {
+                  "const": "UNKNOWN",
+                  "type": "string"
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sex",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "breedId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "speciesId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "minBirthdate",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "maxBirthdate",
+            "required": false
           }
         ],
         "operationId": "getPetPets",
