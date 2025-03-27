@@ -9,7 +9,6 @@ import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import ClearInput from "@/components/ui/clean-input";
 
 const pageSize = 9;
@@ -50,7 +49,10 @@ const PetList = () => {
         <Label htmlFor="name">Nome</Label>
         <ClearInput
           value={name}
-          onChange={({ target }) => setName(target.value)}
+          onChange={({ target }) => {
+            setPage(1);
+            setName(target.value);
+          }}
           id="name"
           autoComplete="n"
         />
