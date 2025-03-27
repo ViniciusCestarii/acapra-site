@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import ClearInput from "@/components/ui/clean-input";
 
 const pageSize = 9;
 
@@ -44,14 +45,14 @@ const PetList = () => {
   };
 
   return (
-    <main className="flex">
-      <section className="w-xs">
+    <main className="flex sm:flex-row flex-col">
+      <section className="sm:w-xs">
         <Label htmlFor="name">Nome</Label>
-        <Input
+        <ClearInput
           value={name}
           onChange={({ target }) => setName(target.value)}
           id="name"
-          placeholder="Nome"
+          autoComplete="n"
         />
       </section>
       <section className="flex-1">
