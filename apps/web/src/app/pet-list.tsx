@@ -1,6 +1,9 @@
 "use client";
 
-import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
+import {
+  getPetPetsOptions,
+  getPetSpeciesOptions,
+} from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
@@ -10,6 +13,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
 import { Label } from "@/components/ui/label";
 import ClearInput from "@/components/ui/clean-input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const pageSize = 9;
 
@@ -22,18 +34,35 @@ const PetList = () => {
     throttleMs: 400,
     ...parseAsString.withDefault(""),
   });
+  const [specie, setSpecie] = useQueryState("especie", {
+    ...parseAsString.withDefault(""),
+  });
+
   const pagination = { page, pageSize };
 
-  const query = useQuery({
+  const petListQuery = useQuery({
     ...getPetPetsOptions({
-      query: { ...pagination, name },
+      query: {
+        ...pagination,
+        name: name ? name : undefined,
+        speciesId: specie ? specie : undefined,
+      },
     }),
+    placeholderData: keepPreviousData,
+  });
+
+  const speciesQuery = useQuery({
+    ...getPetSpeciesOptions(),
     placeholderData: keepPreviousData,
   });
 
   const incrementPage = () => {
     const newPage = pagination.page + 1;
-    if (!query.data || newPage * pagination.pageSize > query.data.total) return;
+    if (
+      !petListQuery.data ||
+      newPage * pagination.pageSize > petListQuery.data.total
+    )
+      return;
     setPage(page + 1);
   };
 
@@ -56,11 +85,33 @@ const PetList = () => {
           id="name"
           autoComplete="n"
         />
+        <Label htmlFor="specie">Espécie</Label>
+        <Select
+          value={specie}
+          onValueChange={(value) => {
+            setPage(1);
+            setSpecie(value);
+          }}
+        >
+          <SelectTrigger id="specie">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Espécies</SelectLabel>
+              {speciesQuery.data?.map((specie) => (
+                <SelectItem key={specie.id} value={specie.id}>
+                  {specie.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>{" "}
       </section>
       <section className="flex-1">
         <Button onClick={decrementPage}>Previous Page</Button>
         <Button onClick={incrementPage}>Next Page</Button>
-        <PetListBase {...query} pageSize={pageSize} />
+        <PetListBase {...petListQuery} pageSize={pageSize} />
       </section>
     </main>
   );
