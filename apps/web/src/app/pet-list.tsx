@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
-import { Label } from "@/components/ui/label";
 import ClearInput from "@/components/ui/clean-input";
+import { useDebounce } from "use-debounce";
 import {
   Select,
   SelectContent,
@@ -22,6 +22,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const pageSize = 9;
 
@@ -40,14 +50,17 @@ const PetList = () => {
 
   const pagination = { page, pageSize };
 
+  const [debouncedName] = useDebounce(name, 150);
+
   const petListQuery = useQuery({
     ...getPetPetsOptions({
       query: {
         ...pagination,
-        name: name ? name : undefined,
-        speciesId: specie ? specie : undefined,
+        name: debouncedName || undefined,
+        specieId: specie || undefined,
       },
     }),
+    staleTime: 1000 * 60 * 3,
     placeholderData: keepPreviousData,
   });
 
@@ -57,56 +70,85 @@ const PetList = () => {
   });
 
   const incrementPage = () => {
-    const newPage = pagination.page + 1;
-    if (
-      !petListQuery.data ||
-      newPage * pagination.pageSize > petListQuery.data.total
-    )
+    if (!petListQuery.data || (page + 1) * pageSize > petListQuery.data.total)
       return;
     setPage(page + 1);
   };
 
   const decrementPage = () => {
-    const newPage = pagination.page - 1;
-    if (newPage < 1) return;
-    setPage(newPage);
+    if (page > 1) setPage(page - 1);
   };
+
+  const formSchema = z.object({
+    name: z.string().optional(),
+    specie: z.string().optional(),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { name, specie },
+  });
 
   return (
     <main className="flex sm:flex-row flex-col">
       <section className="sm:w-xs">
-        <Label htmlFor="name">Nome</Label>
-        <ClearInput
-          value={name}
-          onChange={({ target }) => {
-            setPage(1);
-            setName(target.value);
-          }}
-          id="name"
-          autoComplete="n"
-        />
-        <Label htmlFor="specie">Espécie</Label>
-        <Select
-          value={specie}
-          onValueChange={(value) => {
-            setPage(1);
-            setSpecie(value);
-          }}
-        >
-          <SelectTrigger id="specie">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Espécies</SelectLabel>
-              {speciesQuery.data?.map((specie) => (
-                <SelectItem key={specie.id} value={specie.id}>
-                  {specie.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>{" "}
+        <Form {...form}>
+          <form className="space-y-4">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <ClearInput
+                      {...field}
+                      value={name}
+                      onChange={(e) => {
+                        setPage(1);
+                        setName(e.target.value);
+                      }}
+                      autoComplete="n"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="specie"
+              control={form.control}
+              render={() => (
+                <FormItem>
+                  <FormLabel>Espécie</FormLabel>
+                  <Select
+                    value={specie}
+                    onValueChange={(value) => {
+                      setPage(1);
+                      setSpecie(value);
+                    }}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma espécie" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Espécies</SelectLabel>
+                        {speciesQuery.data?.map((specie) => (
+                          <SelectItem key={specie.id} value={specie.id}>
+                            {specie.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </section>
       <section className="flex-1">
         <Button onClick={decrementPage}>Previous Page</Button>
@@ -116,7 +158,6 @@ const PetList = () => {
     </main>
   );
 };
-
 interface PetListProps {
   data:
     | {

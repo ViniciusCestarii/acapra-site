@@ -93,7 +93,7 @@
                           "format": "uuid",
                           "type": "string"
                         },
-                        "speciesId": {
+                        "specieId": {
                           "format": "uuid",
                           "type": "string"
                         }
@@ -106,7 +106,7 @@
                         "sex",
                         "mainImageId",
                         "breedId",
-                        "speciesId"
+                        "specieId"
                       ]
                     },
                     {
@@ -142,7 +142,7 @@
                               "maxLength": 255,
                               "type": "string"
                             },
-                            "speciesId": {
+                            "specieId": {
                               "format": "uuid",
                               "type": "string"
                             }
@@ -150,7 +150,7 @@
                           "required": [
                             "id",
                             "name",
-                            "speciesId"
+                            "specieId"
                           ]
                         },
                         "specie": {
@@ -314,7 +314,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -324,7 +324,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -367,7 +367,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -377,7 +377,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -420,7 +420,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -430,7 +430,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -525,7 +525,7 @@
               "format": "uuid"
             },
             "in": "query",
-            "name": "speciesId",
+            "name": "specieId",
             "required": false
           },
           {
@@ -626,7 +626,7 @@
                                 "format": "uuid",
                                 "type": "string"
                               },
-                              "speciesId": {
+                              "specieId": {
                                 "format": "uuid",
                                 "type": "string"
                               }
@@ -639,7 +639,7 @@
                               "sex",
                               "mainImageId",
                               "breedId",
-                              "speciesId"
+                              "specieId"
                             ]
                           },
                           {
@@ -675,7 +675,7 @@
                                     "maxLength": 255,
                                     "type": "string"
                                   },
-                                  "speciesId": {
+                                  "specieId": {
                                     "format": "uuid",
                                     "type": "string"
                                   }
@@ -683,7 +683,7 @@
                                 "required": [
                                   "id",
                                   "name",
-                                  "speciesId"
+                                  "specieId"
                                 ]
                               },
                               "specie": {
@@ -812,7 +812,7 @@
                           "format": "uuid",
                           "type": "string"
                         },
-                        "speciesId": {
+                        "specieId": {
                           "format": "uuid",
                           "type": "string"
                         }
@@ -825,7 +825,7 @@
                         "sex",
                         "mainImageId",
                         "breedId",
-                        "speciesId"
+                        "specieId"
                       ]
                     },
                     {
@@ -861,7 +861,7 @@
                               "maxLength": 255,
                               "type": "string"
                             },
-                            "speciesId": {
+                            "specieId": {
                               "format": "uuid",
                               "type": "string"
                             }
@@ -869,7 +869,7 @@
                           "required": [
                             "id",
                             "name",
-                            "speciesId"
+                            "specieId"
                           ]
                         },
                         "specie": {
@@ -1113,7 +1113,7 @@
                       "maxLength": 255,
                       "type": "string"
                     },
-                    "speciesId": {
+                    "specieId": {
                       "format": "uuid",
                       "type": "string"
                     }
@@ -1121,7 +1121,7 @@
                   "required": [
                     "id",
                     "name",
-                    "speciesId"
+                    "specieId"
                   ]
                 }
               }
@@ -1213,14 +1213,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1231,14 +1231,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1249,14 +1249,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -1287,7 +1287,7 @@
                       "maxLength": 255,
                       "type": "string"
                     },
-                    "speciesId": {
+                    "specieId": {
                       "format": "uuid",
                       "type": "string"
                     }
@@ -1295,7 +1295,7 @@
                   "required": [
                     "id",
                     "name",
-                    "speciesId"
+                    "specieId"
                   ]
                 }
               }
@@ -1391,7 +1391,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1399,7 +1399,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1414,7 +1414,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1422,7 +1422,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1437,7 +1437,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1445,7 +1445,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -1490,7 +1490,7 @@
                         "maxLength": 255,
                         "type": "string"
                       },
-                      "speciesId": {
+                      "specieId": {
                         "format": "uuid",
                         "type": "string"
                       }
@@ -1498,7 +1498,7 @@
                     "required": [
                       "id",
                       "name",
-                      "speciesId"
+                      "specieId"
                     ]
                   }
                 }

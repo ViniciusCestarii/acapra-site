@@ -2,22 +2,39 @@
 
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CircleXIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const Select = (props: React.ComponentProps<typeof SelectPrimitive.Root>) => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <SelectContext.Provider value={setIsOpen}>
+    <SelectContext.Provider
+      value={{
+        setIsOpen,
+        onValueChange: props.onValueChange,
+        value: props.value,
+      }}
+    >
       <SelectPrimitive.Root open={isOpen} onOpenChange={setIsOpen} {...props} />
     </SelectContext.Provider>
   );
 };
 
-const SelectContext = React.createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
->(() => {});
+const SelectContext = React.createContext<{
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onValueChange?: (value: string) => void;
+  value?: string;
+}>({
+  setIsOpen: () => {},
+  onValueChange: undefined,
+  value: undefined,
+});
 
 function SelectGroup({
   ...props
@@ -39,30 +56,51 @@ function SelectTrigger({
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
 }) {
-  const setIsOpen = React.useContext(SelectContext);
+  const { setIsOpen, onValueChange, value } = React.useContext(SelectContext);
+  const selectRef = React.useRef<HTMLSelectElement>(null);
+  const handleClearInput = () => {
+    if (onValueChange === undefined) return;
+
+    onValueChange("");
+    if (selectRef.current) {
+      selectRef.current.focus();
+    }
+  };
   return (
-    <SelectPrimitive.Trigger
-      data-slot="select-trigger"
-      data-size={size}
-      className={cn(
-        "w-full border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
+    <div className="relative">
+      <SelectPrimitive.Trigger
+        data-slot="select-trigger"
+        data-size={size}
+        className={cn(
+          "w-full border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+          className,
+        )}
+        onPointerDown={(e) => {
+          if (e.pointerType === "touch") e.preventDefault(); // disable the default behavior in mobile
+        }}
+        onPointerUp={(e) => {
+          if (e.pointerType === "touch") {
+            setIsOpen((prevState) => !prevState); // use onPointerUp to simulate onClick in mobile
+          }
+        }}
+        {...props}
+      >
+        {children}
+        <SelectPrimitive.Icon asChild className={value ? "hidden" : undefined}>
+          <ChevronDownIcon className="size-4 text-muted-foreground/80" />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+
+      {value && (
+        <button
+          className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Clear select"
+          onClick={handleClearInput}
+        >
+          <CircleXIcon size={16} aria-hidden="true" />
+        </button>
       )}
-      onPointerDown={(e) => {
-        if (e.pointerType === "touch") e.preventDefault(); // disable the default behavior in mobile
-      }}
-      onPointerUp={(e) => {
-        if (e.pointerType === "touch") {
-          setIsOpen((prevState) => !prevState); // use onPointerUp to simulate onClick in mobile
-        }
-      }}
-      {...props}
-    >
-      {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
+    </div>
   );
 }
 
