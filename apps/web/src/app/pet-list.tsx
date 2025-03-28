@@ -2,11 +2,17 @@
 
 import {
   getPetPetsOptions,
+  getPetSpeciesByIdBreedsOptions,
   getPetSpeciesOptions,
 } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
-import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import {
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs";
 import { Button } from "@/components/ui/button";
 import { Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,6 +38,8 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { sexDict } from "@/utils/dict";
+import { startTransition } from "react";
 
 const pageSize = 9;
 
@@ -47,6 +55,14 @@ const PetList = () => {
   const [specie, setSpecie] = useQueryState("especie", {
     ...parseAsString.withDefault(""),
   });
+  const [breed, setBreed] = useQueryState("raça", {
+    ...parseAsString.withDefault(""),
+  });
+  const [sex, setSex] = useQueryState("sexo", {
+    ...parseAsStringEnum<Pet["sex"] | "">(
+      Object.keys(sexDict) as Pet["sex"][],
+    ).withDefault(""),
+  });
 
   const pagination = { page, pageSize };
 
@@ -58,6 +74,8 @@ const PetList = () => {
         ...pagination,
         name: debouncedName || undefined,
         specieId: specie || undefined,
+        breedId: breed || undefined,
+        sex: sex || undefined,
       },
     }),
     staleTime: 1000 * 60 * 3,
@@ -66,6 +84,17 @@ const PetList = () => {
 
   const speciesQuery = useQuery({
     ...getPetSpeciesOptions(),
+    placeholderData: keepPreviousData,
+  });
+
+  const breedQuery = useQuery({
+    ...getPetSpeciesByIdBreedsOptions({
+      path: {
+        id: specie,
+      },
+    }),
+    staleTime: 1000 * 60 * 3,
+    enabled: !!specie,
     placeholderData: keepPreviousData,
   });
 
@@ -82,11 +111,13 @@ const PetList = () => {
   const formSchema = z.object({
     name: z.string().optional(),
     specie: z.string().optional(),
+    breed: z.string().optional(),
+    sex: z.enum(["MALE", "FEMALE", "UNKNOWN"]).optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name, specie },
+    defaultValues: { name, specie, breed },
   });
 
   return (
@@ -126,6 +157,7 @@ const PetList = () => {
                     onValueChange={(value) => {
                       setPage(1);
                       setSpecie(value);
+                      setBreed("");
                     }}
                   >
                     <FormControl>
@@ -147,12 +179,93 @@ const PetList = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              name="breed"
+              control={form.control}
+              render={() => (
+                <FormItem>
+                  <FormLabel>Raça</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={breed}
+                      onValueChange={(value) => {
+                        setPage(1);
+                        setBreed(value);
+                      }}
+                      disabled={!specie}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={
+                              specie
+                                ? "Selecione uma raça"
+                                : "Selecione um espécie primeiro"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Raças</SelectLabel>
+                          {breedQuery.data?.map((breed) => (
+                            <SelectItem key={breed.id} value={breed.id}>
+                              {breed.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="sex"
+              control={form.control}
+              render={() => (
+                <FormItem>
+                  <FormLabel>Sexo</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={sex}
+                      onValueChange={(value) => {
+                        setPage(1);
+                        console.log(value);
+                        setSex(value as Pet["sex"]);
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um sexo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Sexos</SelectLabel>
+                          {Object.keys(sexDict).map((sex) => (
+                            <SelectItem key={sex} value={sex}>
+                              {sexDict[sex as Pet["sex"]]}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </section>
       <section className="flex-1">
         <Button onClick={decrementPage}>Previous Page</Button>
         <Button onClick={incrementPage}>Next Page</Button>
+        {petListQuery.data?.total && (
+          <span>Total: {petListQuery.data?.total}</span>
+        )}
         <PetListBase {...petListQuery} pageSize={pageSize} />
       </section>
     </main>
