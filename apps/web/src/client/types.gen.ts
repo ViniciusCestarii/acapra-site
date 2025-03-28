@@ -6,6 +6,12 @@ export type GetPetPetsData = {
   query: {
     page: string | number;
     pageSize: string | number;
+    name?: string;
+    sex?: "MALE" | "FEMALE" | "UNKNOWN";
+    breedId?: string;
+    specieId?: string;
+    minBirthdate?: string;
+    maxBirthdate?: string;
   };
   url: "/pet/pets";
 };
@@ -31,7 +37,7 @@ export type GetPetPetsResponses = {
         sex: "MALE" | "FEMALE" | "UNKNOWN";
         mainImageId: string | null;
         breedId: string;
-        speciesId: string;
+        specieId: string;
       } & {
         images: Array<{
           id: string;
@@ -40,7 +46,7 @@ export type GetPetPetsResponses = {
         breed: {
           id: string;
           name: string;
-          speciesId: string;
+          specieId: string;
         };
         specie: {
           id: string;
@@ -65,7 +71,7 @@ export type PostPetPetsData = {
     sex: "MALE" | "FEMALE" | "UNKNOWN";
     mainImageId?: string;
     breedId: string;
-    speciesId: string;
+    specieId: string;
   };
   path?: never;
   query?: never;
@@ -116,7 +122,7 @@ export type PostPetPetsResponses = {
     sex: "MALE" | "FEMALE" | "UNKNOWN";
     mainImageId: string | null;
     breedId: string;
-    speciesId: string;
+    specieId: string;
   } & {
     images: Array<{
       id: string;
@@ -125,7 +131,7 @@ export type PostPetPetsResponses = {
     breed: {
       id: string;
       name: string;
-      speciesId: string;
+      specieId: string;
     };
     specie: {
       id: string;
@@ -175,7 +181,7 @@ export type GetPetPetsByIdResponses = {
     sex: "MALE" | "FEMALE" | "UNKNOWN";
     mainImageId: string | null;
     breedId: string;
-    speciesId: string;
+    specieId: string;
   } & {
     images: Array<{
       id: string;
@@ -184,7 +190,7 @@ export type GetPetPetsByIdResponses = {
     breed: {
       id: string;
       name: string;
-      speciesId: string;
+      specieId: string;
     };
     specie: {
       id: string;
@@ -249,7 +255,7 @@ export type PostPetPetsByIdImagesResponse =
 export type PostPetBreedsData = {
   body: {
     name: string;
-    speciesId: string;
+    specieId: string;
   };
   path?: never;
   query?: never;
@@ -293,7 +299,7 @@ export type PostPetBreedsResponses = {
   201: {
     id: string;
     name: string;
-    speciesId: string;
+    specieId: string;
   };
 };
 
@@ -304,7 +310,7 @@ export type PutPetBreedsData = {
   body: {
     id: string;
     name: string;
-    speciesId: string;
+    specieId: string;
   };
   path?: never;
   query?: never;
@@ -348,7 +354,7 @@ export type PutPetBreedsResponses = {
   200: {
     id: string;
     name: string;
-    speciesId: string;
+    specieId: string;
   };
 };
 
@@ -388,7 +394,7 @@ export type GetPetSpeciesByIdBreedsResponses = {
   200: Array<{
     id: string;
     name: string;
-    speciesId: string;
+    specieId: string;
   }>;
 };
 

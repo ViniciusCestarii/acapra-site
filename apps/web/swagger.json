@@ -93,7 +93,7 @@
                           "format": "uuid",
                           "type": "string"
                         },
-                        "speciesId": {
+                        "specieId": {
                           "format": "uuid",
                           "type": "string"
                         }
@@ -106,7 +106,7 @@
                         "sex",
                         "mainImageId",
                         "breedId",
-                        "speciesId"
+                        "specieId"
                       ]
                     },
                     {
@@ -142,7 +142,7 @@
                               "maxLength": 255,
                               "type": "string"
                             },
-                            "speciesId": {
+                            "specieId": {
                               "format": "uuid",
                               "type": "string"
                             }
@@ -150,7 +150,7 @@
                           "required": [
                             "id",
                             "name",
-                            "speciesId"
+                            "specieId"
                           ]
                         },
                         "specie": {
@@ -314,7 +314,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -324,7 +324,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -367,7 +367,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -377,7 +377,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -420,7 +420,7 @@
                     "format": "uuid",
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -430,7 +430,7 @@
                   "birthdate",
                   "sex",
                   "breedId",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -480,6 +480,71 @@
             "in": "query",
             "name": "pageSize",
             "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "MALE",
+                  "type": "string"
+                },
+                {
+                  "const": "FEMALE",
+                  "type": "string"
+                },
+                {
+                  "const": "UNKNOWN",
+                  "type": "string"
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sex",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "breedId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "specieId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "minBirthdate",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "maxBirthdate",
+            "required": false
           }
         ],
         "operationId": "getPetPets",
@@ -561,7 +626,7 @@
                                 "format": "uuid",
                                 "type": "string"
                               },
-                              "speciesId": {
+                              "specieId": {
                                 "format": "uuid",
                                 "type": "string"
                               }
@@ -574,7 +639,7 @@
                               "sex",
                               "mainImageId",
                               "breedId",
-                              "speciesId"
+                              "specieId"
                             ]
                           },
                           {
@@ -610,7 +675,7 @@
                                     "maxLength": 255,
                                     "type": "string"
                                   },
-                                  "speciesId": {
+                                  "specieId": {
                                     "format": "uuid",
                                     "type": "string"
                                   }
@@ -618,7 +683,7 @@
                                 "required": [
                                   "id",
                                   "name",
-                                  "speciesId"
+                                  "specieId"
                                 ]
                               },
                               "specie": {
@@ -747,7 +812,7 @@
                           "format": "uuid",
                           "type": "string"
                         },
-                        "speciesId": {
+                        "specieId": {
                           "format": "uuid",
                           "type": "string"
                         }
@@ -760,7 +825,7 @@
                         "sex",
                         "mainImageId",
                         "breedId",
-                        "speciesId"
+                        "specieId"
                       ]
                     },
                     {
@@ -796,7 +861,7 @@
                               "maxLength": 255,
                               "type": "string"
                             },
-                            "speciesId": {
+                            "specieId": {
                               "format": "uuid",
                               "type": "string"
                             }
@@ -804,7 +869,7 @@
                           "required": [
                             "id",
                             "name",
-                            "speciesId"
+                            "specieId"
                           ]
                         },
                         "specie": {
@@ -1048,7 +1113,7 @@
                       "maxLength": 255,
                       "type": "string"
                     },
-                    "speciesId": {
+                    "specieId": {
                       "format": "uuid",
                       "type": "string"
                     }
@@ -1056,7 +1121,7 @@
                   "required": [
                     "id",
                     "name",
-                    "speciesId"
+                    "specieId"
                   ]
                 }
               }
@@ -1148,14 +1213,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1166,14 +1231,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1184,14 +1249,14 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
                 },
                 "required": [
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -1222,7 +1287,7 @@
                       "maxLength": 255,
                       "type": "string"
                     },
-                    "speciesId": {
+                    "specieId": {
                       "format": "uuid",
                       "type": "string"
                     }
@@ -1230,7 +1295,7 @@
                   "required": [
                     "id",
                     "name",
-                    "speciesId"
+                    "specieId"
                   ]
                 }
               }
@@ -1326,7 +1391,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1334,7 +1399,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1349,7 +1414,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1357,7 +1422,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             },
@@ -1372,7 +1437,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "speciesId": {
+                  "specieId": {
                     "format": "uuid",
                     "type": "string"
                   }
@@ -1380,7 +1445,7 @@
                 "required": [
                   "id",
                   "name",
-                  "speciesId"
+                  "specieId"
                 ]
               }
             }
@@ -1425,7 +1490,7 @@
                         "maxLength": 255,
                         "type": "string"
                       },
-                      "speciesId": {
+                      "specieId": {
                         "format": "uuid",
                         "type": "string"
                       }
@@ -1433,7 +1498,7 @@
                     "required": [
                       "id",
                       "name",
-                      "speciesId"
+                      "specieId"
                     ]
                   }
                 }
