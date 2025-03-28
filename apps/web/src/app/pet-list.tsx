@@ -99,8 +99,7 @@ const PetList = () => {
   });
 
   const incrementPage = () => {
-    if (!petListQuery.data || (page + 1) * pageSize > petListQuery.data.total)
-      return;
+    if (!petListQuery.data || page * pageSize > petListQuery.data.total) return;
     setPage(page + 1);
   };
 
