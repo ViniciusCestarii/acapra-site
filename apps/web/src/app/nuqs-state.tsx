@@ -1,5 +1,5 @@
 import { Pet } from "@/types/pet";
-import { sexDict } from "@/utils/dict";
+import { Age, petAgeDict, sexDict } from "@/utils/dict";
 import {
   parseAsInteger,
   parseAsString,
@@ -34,6 +34,14 @@ export const useSex = () => {
   return useQueryState("sexo", {
     ...parseAsStringEnum<Pet["sex"] | "">(
       Object.keys(sexDict) as Pet["sex"][],
+    ).withDefault(""),
+  });
+};
+
+export const useAge = () => {
+  return useQueryState("idade", {
+    ...parseAsStringEnum<Age | "">(
+      Object.keys(petAgeDict.Gato) as Age[],
     ).withDefault(""),
   });
 };

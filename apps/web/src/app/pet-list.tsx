@@ -4,12 +4,21 @@ import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
 import { Button } from "@/components/ui/button";
-import { Pet } from "@/types/pet";
+import { AcapraSpecies, Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDelay from "@/hooks/useDelay";
 import { useDebounce } from "use-debounce";
 import PetSearch from "./pet-search";
-import { useBreed, useName, usePage, useSex, useSpecie } from "./nuqs-state";
+import {
+  useAge,
+  useBreed,
+  useName,
+  usePage,
+  useSex,
+  useSpecie,
+} from "./nuqs-state";
+import { petAgeDict } from "@/utils/dict";
+import { getDateMonthsAgo } from "@/utils/date";
 
 const pageSize = 9;
 
@@ -19,6 +28,8 @@ const PetList = () => {
   const [specie] = useSpecie();
   const [breed] = useBreed();
   const [sex] = useSex();
+  const [age] = useAge();
+
   const pagination = { page, pageSize };
 
   const [debouncedName] = useDebounce(name, 150);
@@ -31,6 +42,20 @@ const PetList = () => {
         specieId: specie || undefined,
         breedId: breed || undefined,
         sex: sex || undefined,
+        maxBirthdate:
+          specie && age
+            ? getDateMonthsAgo(
+                petAgeDict["Gato" as AcapraSpecies]?.[age]?.min ?? 0,
+              )
+            : undefined,
+        minBirthdate:
+          specie && age
+            ? petAgeDict["Gato" as AcapraSpecies]?.[age]?.max === Infinity
+              ? undefined
+              : getDateMonthsAgo(
+                  petAgeDict["Gato" as AcapraSpecies]?.[age]?.max ?? 0,
+                )
+            : undefined,
       },
     }),
     staleTime: 1000 * 60 * 3,
@@ -38,7 +63,8 @@ const PetList = () => {
   });
 
   const incrementPage = () => {
-    if (!petListQuery.data || page * pageSize > petListQuery.data.total) return;
+    if (!petListQuery.data || page * pageSize >= petListQuery.data.total)
+      return;
     setPage(page + 1);
   };
 

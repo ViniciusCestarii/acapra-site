@@ -19,20 +19,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sexDict } from "@/utils/dict";
+import { Age, petAgeDict, sexDict } from "@/utils/dict";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useBreed, useName, usePage, useSex, useSpecie } from "./nuqs-state";
-import { Pet } from "@/types/pet";
+import {
+  useAge,
+  useBreed,
+  useName,
+  usePage,
+  useSex,
+  useSpecie,
+} from "./nuqs-state";
+import { AcapraSpecies, Pet } from "@/types/pet";
 
 const formSchema = z.object({
   name: z.string().optional(),
   specie: z.string().optional(),
   breed: z.string().optional(),
-  sex: z.enum(["MALE", "FEMALE", "UNKNOWN"]).optional(),
+  sex: z.enum(Object.keys(sexDict) as [Pet["sex"], ...Pet["sex"][]]).optional(),
+  age: z.enum(Object.keys(petAgeDict.Gato) as [Age, ...Age[]]).optional(),
 });
 
 const PetSearch = () => {
@@ -41,6 +49,7 @@ const PetSearch = () => {
   const [specie, setSpecie] = useSpecie();
   const [breed, setBreed] = useBreed();
   const [sex, setSex] = useSex();
+  const [age, setAge] = useAge();
 
   const speciesQuery = useQuery({
     ...getPetSpeciesOptions(),
@@ -99,6 +108,7 @@ const PetSearch = () => {
                   setPage(1);
                   setSpecie(value);
                   setBreed("");
+                  setAge("");
                 }}
               >
                 <FormControl>
@@ -174,7 +184,6 @@ const PetSearch = () => {
                   value={sex}
                   onValueChange={(value) => {
                     setPage(1);
-                    console.log(value);
                     setSex(value as Pet["sex"]);
                   }}
                 >
@@ -189,6 +198,52 @@ const PetSearch = () => {
                       {Object.keys(sexDict).map((sex) => (
                         <SelectItem key={sex} value={sex}>
                           {sexDict[sex as Pet["sex"]]}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="age"
+          control={form.control}
+          render={() => (
+            <FormItem>
+              <FormLabel>Idade</FormLabel>
+              <FormControl>
+                <Select
+                  value={age}
+                  onValueChange={(value) => {
+                    setPage(1);
+                    setAge(value as Age);
+                  }}
+                  disabled={
+                    !specie || petAgeDict[specie as AcapraSpecies] === undefined
+                  }
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={
+                          specie
+                            ? petAgeDict[specie as AcapraSpecies]
+                              ? "Selecione uma idade"
+                              : "Espécie não suportada"
+                            : "Selecione um espécie primeiro"
+                        }
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Idades</SelectLabel>
+                      {Object.keys(petAgeDict.Gato).map((age) => (
+                        <SelectItem key={age} value={age}>
+                          {age}
                         </SelectItem>
                       ))}
                     </SelectGroup>
