@@ -6,7 +6,6 @@ import PetItem from "./pet-item";
 import { Button } from "@/components/ui/button";
 import { AcapraSpecies, Pet } from "@/types/pet";
 import { Skeleton } from "@/components/ui/skeleton";
-import useDelay from "@/hooks/useDelay";
 import { useDebounce } from "use-debounce";
 import PetSearch from "./pet-search";
 import {
@@ -100,16 +99,22 @@ interface PetListProps {
 }
 
 const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
-  const showSkeleton = useDelay(400);
-
   if (isError) return <div>Ops, ocorreu um erro!</div>;
   if (isLoading)
     return (
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-        {showSkeleton &&
-          Array.from({ length: pageSize }).map((_, i) => (
-            <Skeleton key={i} className="rounded-lg p-10 aspect-[10.7/8]" />
-          ))}
+      <div className="opacity-100 transition-all delay-500 duration-300 starting:opacity-0 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+        {Array.from({ length: pageSize }).map((_, i) => (
+          <Skeleton
+            key={i}
+            className="rounded-lg p-1 bg-primary text-background flex flex-col items-center"
+          >
+            <div className="w-full aspect-video bg-muted rounded-lg" />{" "}
+            {/* Simulates Avatar */}
+            <div className="size-10 -mt-4 bg-primary rounded-md" />{" "}
+            {/* Simulates Icon */}
+            <div className="h-6 w-1/2 mt-2" /> {/* Simulates Name */}
+          </Skeleton>
+        ))}
       </div>
     );
   if (!data) return <div>Nenhum dado encontrado</div>;
