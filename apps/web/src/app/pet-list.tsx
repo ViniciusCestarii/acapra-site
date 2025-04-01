@@ -106,13 +106,15 @@ const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
         {Array.from({ length: pageSize }).map((_, i) => (
           <Skeleton
             key={i}
-            className="rounded-lg p-1 bg-primary text-background flex flex-col items-center"
+            className="relative rounded-lg p-1 bg-primary text-background flex flex-col items-center"
           >
+            <div className="absolute top-0 right-0 z-10 bg-primary size-8 rounded-bl-lg rounded-tr-lg" />
+            {/* Simulates Description Icon */}
             <div className="w-full aspect-video bg-muted rounded-lg" />{" "}
             {/* Simulates Avatar */}
-            <div className="size-10 -mt-4 bg-primary rounded-md" />{" "}
+            <div className="size-12 -mt-4 bg-primary rounded-lg" />{" "}
             {/* Simulates Icon */}
-            <div className="h-6 w-1/2 mt-2" /> {/* Simulates Name */}
+            <div className="h-6" /> {/* Simulates Name */}
           </Skeleton>
         ))}
       </div>

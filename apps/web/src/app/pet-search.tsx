@@ -53,6 +53,7 @@ const PetSearch = () => {
 
   const speciesQuery = useQuery({
     ...getPetSpeciesOptions(),
+    staleTime: 1000 * 60 * 3,
     placeholderData: keepPreviousData,
   });
 
