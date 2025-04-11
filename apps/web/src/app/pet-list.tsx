@@ -79,7 +79,7 @@ const PetList = () => {
       <section className="flex-1">
         <Button onClick={decrementPage}>Previous Page</Button>
         <Button onClick={incrementPage}>Next Page</Button>
-        {petListQuery.data?.total && (
+        {petListQuery.data?.total !== undefined && (
           <span>Total: {petListQuery.data?.total}</span>
         )}
         <PetListBase {...petListQuery} pageSize={pageSize} />

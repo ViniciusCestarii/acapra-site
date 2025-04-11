@@ -7,6 +7,7 @@ import OpenapiTs from "../context/openapi-ts";
 import ClientOpenapiTs from "../context/client-openapi-ts";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Container } from "@/components/ui/container";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ export default function RootLayout({
               <body
                 className={`${nunito.variable} antialiased text-foreground bg-background font-nunito`}
               >
-                {children}
+                <Container>{children}</Container>
                 <Toaster />
                 <ReactQueryDevtools initialIsOpen={false} />
               </body>
