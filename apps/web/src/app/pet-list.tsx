@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";
@@ -44,16 +45,16 @@ const PetList = () => {
         maxBirthdate:
           specie && age
             ? getDateMonthsAgo(
-                petAgeDict["Gato" as AcapraSpecies]?.[age]?.min ?? 0,
-              )
+              petAgeDict["Gato" as AcapraSpecies]?.[age]?.min ?? 0,
+            )
             : undefined,
         minBirthdate:
           specie && age
             ? petAgeDict["Gato" as AcapraSpecies]?.[age]?.max === Infinity
               ? undefined
               : getDateMonthsAgo(
-                  petAgeDict["Gato" as AcapraSpecies]?.[age]?.max ?? 0,
-                )
+                petAgeDict["Gato" as AcapraSpecies]?.[age]?.max ?? 0,
+              )
             : undefined,
       },
     }),
@@ -72,57 +73,97 @@ const PetList = () => {
   };
 
   return (
-    <main className="flex sm:flex-row flex-col">
-      <section className="sm:w-xs">
-        <PetSearch />
-      </section>
-      <section className="flex-1">
-        <Button onClick={decrementPage}>Previous Page</Button>
-        <Button onClick={incrementPage}>Next Page</Button>
-        {petListQuery.data?.total !== undefined && (
-          <span>Total: {petListQuery.data?.total}</span>
-        )}
-        <PetListBase {...petListQuery} pageSize={pageSize} />
-      </section>
-    </main>
+    <div className="max-w-7xl mx-auto">
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Search Section */}
+        <aside className="lg:w-1/4 w-full bg-gray-50 p-6 rounded-lg shadow-sm">
+          <h2 className="text-xl font-semibold mb-6">Econtre o seu pet</h2>
+          <PetSearch />
+        </aside>
+
+        {/* Pet List Section */}
+        <main className="lg:w-3/4 w-full">
+          {/* Pagination Controls */}
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={decrementPage}
+                disabled={page <= 1}
+                variant="outline"
+                size="sm"
+              >
+                Anterior
+              </Button>
+              <span className="text-sm font-medium">Página {page}</span>
+              <Button
+                onClick={incrementPage}
+                disabled={!petListQuery.data || page * pageSize >= petListQuery.data.total}
+                variant="outline"
+                size="sm"
+              >
+                Próximo
+              </Button>
+            </div>
+
+            {petListQuery.data?.total !== undefined && (
+              <span className="text-sm text-gray-600">
+                Total: {petListQuery.data?.total} pets
+              </span>
+            )}
+          </div>
+
+          {/* Pet Grid */}
+          <PetListBase {...petListQuery} pageSize={pageSize} />
+        </main>
+      </div>
+    </div>
   );
 };
+
 interface PetListProps {
   data:
-    | {
-        pets: Pet[];
-      }
-    | undefined;
+  | {
+    pets: Pet[];
+  }
+  | undefined;
   isLoading: boolean;
   isError: boolean;
   pageSize: number;
 }
 
 const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
-  if (isError) return <div>Ops, ocorreu um erro!</div>;
+  if (isError) return (
+    <div className="text-center p-8 bg-red-50 rounded-lg">
+      <p className="text-red-500 font-medium">Ops, ocorreu um erro!</p>
+    </div>
+  );
+
   if (isLoading)
     return (
-      <div className="opacity-100 transition-all delay-500 duration-300 starting:opacity-0 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
         {Array.from({ length: pageSize }).map((_, i) => (
           <Skeleton
             key={i}
-            className="relative rounded-lg p-1 bg-primary text-background flex flex-col items-center"
+            className="relative rounded-lg p-4 bg-gray-100 text-background flex flex-col items-center h-64"
           >
             <div className="absolute top-0 right-0 z-10 bg-primary size-8 rounded-bl-lg rounded-tr-lg" />
-            {/* Simulates Description Icon */}
-            <div className="w-full aspect-video bg-muted rounded-lg" />{" "}
-            {/* Simulates Avatar */}
-            <div className="size-12 -mt-4 bg-primary rounded-lg" />{" "}
-            {/* Simulates Icon */}
-            <div className="h-6" /> {/* Simulates Name */}
+            <div className="w-full aspect-video bg-gray-200 rounded-lg" />
+            <div className="size-12 -mt-4 bg-gray-300 rounded-full" />
+            <div className="h-6 w-24 mt-2 bg-gray-200 rounded" />
           </Skeleton>
         ))}
       </div>
     );
-  if (!data) return <div>Nenhum dado encontrado</div>;
+
+  if (!data?.pets?.length) return (
+    <div className="text-center p-12 bg-gray-50 rounded-lg">
+      <p className="text-gray-500">Nenhum pet encontrado com esses critérios.</p>
+      <p className="text-gray-400 text-sm mt-2">Tente ajustar os filtros de busca.</p>
+    </div>
+  );
 
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
       {data.pets.map((pet) => (
         <PetItem key={pet.id} pet={pet} />
       ))}
