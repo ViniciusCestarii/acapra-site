@@ -7,6 +7,17 @@ import { verifyToken } from "./utils/auth/check-jwt";
 export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
   const token = cookieStore.get("auth");
+  const { pathname } = request.nextUrl;
+
+  if (pathname.includes("/admin")) {
+    if (!token?.value) return NextResponse.redirect(new URL("/login", request.url));
+
+    const tokenPayload = await verifyToken(token.value);
+    if (!tokenPayload) return NextResponse.redirect(new URL("/login", request.url));
+    if (tokenPayload) {
+      return NextResponse.next();
+    }
+  }
 
   if (token?.value) {
     const tokenPayload = await verifyToken(token.value);
@@ -15,5 +26,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login"],
+  matcher: ["/login", "/admin"],
 };

@@ -1,7 +1,7 @@
 import AcapraLogo from "@/components/icons/acapra-logo";
 import Link from "next/link";
 import React from "react";
-import ReturnButton from "./return-button";
+import ReturnButton from "@/app/(layout-return)/return-button";
 
 const LayoutReturn = ({ children }: { children: React.ReactNode }) => {
   return (
