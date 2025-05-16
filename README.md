@@ -1,5 +1,13 @@
 # Acapra Site
 
+Acapra Site is a web application that allows users to create, edit, and manage pets.
+
+![Acapra Login](./images/acapra-login.png)
+
+![Acapra Home](./images/acapra-pet-list.png)
+
+![Acapra Pet](./images/acapra-pet.png)
+
 ## Getting Started
 
 1. Clone the repository
