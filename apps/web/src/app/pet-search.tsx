@@ -22,7 +22,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import BreedSelect from "./breed-select";
+import BreedSelect from "./pet-breed-select";
+import PetSpecieSelect from "./pet-specie-select";
 import {
   useAge,
   useBreed,
@@ -84,39 +85,13 @@ const PetSearch = () => {
           )}
         />
 
-        <FormField
-          name="specie"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Espécie</FormLabel>
-              <Select
-                value={specie}
-                onValueChange={(value) => {
-                  setPage(1);
-                  setSpecie(value);
-                  setBreed("");
-                  setAge("");
-                }}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione uma espécie" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Espécies</SelectLabel>
-                    {speciesQuery.data?.map((specie) => (
-                      <SelectItem key={specie.id} value={specie.id}>
-                        {specie.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
+        <PetSpecieSelect
+          specie={specie}
+          setSpecie={(specie) => {
+            setPage(1);
+            setSpecie(specie);
+            setBreed("");
+          }}
         />
 
         <BreedSelect
