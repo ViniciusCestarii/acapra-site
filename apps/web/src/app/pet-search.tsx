@@ -1,7 +1,4 @@
-import {
-  getPetSpeciesByIdBreedsOptions,
-  getPetSpeciesOptions,
-} from "@/client/@tanstack/react-query.gen";
+import { getPetSpeciesOptions } from "@/client/@tanstack/react-query.gen";
 import ClearInput from "@/components/ui/clean-input";
 import {
   Form,
@@ -25,6 +22,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import BreedSelect from "./breed-select";
 import {
   useAge,
   useBreed,
@@ -54,17 +52,6 @@ const PetSearch = () => {
   const speciesQuery = useQuery({
     ...getPetSpeciesOptions(),
     staleTime: 1000 * 60 * 3,
-    placeholderData: keepPreviousData,
-  });
-
-  const breedQuery = useQuery({
-    ...getPetSpeciesByIdBreedsOptions({
-      path: {
-        id: specie,
-      },
-    }),
-    staleTime: 1000 * 60 * 3,
-    enabled: !!specie,
     placeholderData: keepPreviousData,
   });
 
@@ -132,46 +119,13 @@ const PetSearch = () => {
           )}
         />
 
-        <FormField
-          name="breed"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Raça</FormLabel>
-              <FormControl>
-                <Select
-                  value={breed}
-                  onValueChange={(value) => {
-                    setPage(1);
-                    setBreed(value);
-                  }}
-                  disabled={!specie}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={
-                          specie
-                            ? "Selecione uma raça"
-                            : "Selecione um espécie primeiro"
-                        }
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Raças</SelectLabel>
-                      {breedQuery.data?.map((breed) => (
-                        <SelectItem key={breed.id} value={breed.id}>
-                          {breed.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
+        <BreedSelect
+          specie={specie}
+          breed={breed}
+          setBreed={(breed) => {
+            setPage(1);
+            setBreed(breed);
+          }}
         />
 
         <FormField
