@@ -28,7 +28,7 @@ export async function generateMetadata({
   const pet = result.data!;
 
   const images: Pet["images"] = pet.images.sort((a) =>
-    a.id === pet.mainImageId ? -1 : 1
+    a.id === pet.mainImageId ? -1 : 1,
   );
 
   return {
@@ -100,7 +100,7 @@ const PetPage = async ({ params }: PetPageProps) => {
 
 const makePetImages = (pet: Pet) => {
   const images: Pet["images"] = pet.images.sort((a) =>
-    a.id === pet.mainImageId ? -1 : 1
+    a.id === pet.mainImageId ? -1 : 1,
   );
   const remainder = images.length % 4;
 
@@ -111,7 +111,7 @@ const makePetImages = (pet: Pet) => {
     (_, i) => ({
       id: `padding-${i}`,
       src: "",
-    })
+    }),
   );
 
   return [...images, ...padding];

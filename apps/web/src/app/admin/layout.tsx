@@ -3,11 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 const LayoutReturn = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default LayoutReturn;

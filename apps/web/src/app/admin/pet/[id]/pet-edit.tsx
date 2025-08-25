@@ -36,7 +36,7 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setPetData((prev) => ({ ...prev, [name]: value }));
