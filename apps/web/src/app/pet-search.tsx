@@ -6,23 +6,11 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Pet } from "@/types/pet";
 import { Age, petAgeDict, sexDict } from "@/utils/dict";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import BreedSelect from "./pet-breed-select";
-import PetSpecieSelect from "./pet-specie-select";
-import PetAgeSelect from "./pet-age-select";
 import {
   useAge,
   useBreed,
@@ -31,7 +19,10 @@ import {
   useSex,
   useSpecie,
 } from "./nuqs-state";
-import { Pet } from "@/types/pet";
+import PetAgeSelect from "./pet-age-select";
+import BreedSelect from "./pet-breed-select";
+import PetSpecieSelect from "./pet-specie-select";
+import PetSexSelect from "./pet-sex-select";
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -96,39 +87,12 @@ const PetSearch = () => {
           }}
         />
 
-        <FormField
-          name="sex"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Sexo</FormLabel>
-              <FormControl>
-                <Select
-                  value={sex}
-                  onValueChange={(value) => {
-                    setPage(1);
-                    setSex(value as Pet["sex"]);
-                  }}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione um sexo" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Sexos</SelectLabel>
-                      {Object.keys(sexDict).map((sex) => (
-                        <SelectItem key={sex} value={sex}>
-                          {sexDict[sex as Pet["sex"]]}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
+        <PetSexSelect
+          sex={sex}
+          setSex={(sex) => {
+            setPage(1);
+            setSex(sex);
+          }}
         />
 
         <PetAgeSelect
