@@ -27,7 +27,6 @@ const PetItem = ({ pet }: PetItem) => {
         />
 
         <div className="-mt-4 relative z-10 rounded-lg p-2 group-even:bg-red-500 bg-amber-500">
-          {/* these commented classes are the actual figma design but I prefer the bg-primary */}
           <Dog className="size-8" />
         </div>
 
