@@ -7,6 +7,7 @@ export type GetPetPetsData = {
     page: string | number;
     pageSize: string | number;
     name?: string;
+    status?: "ACTIVE" | "INACTIVE" | "ADOPTED";
     sex?: "MALE" | "FEMALE" | "UNKNOWN";
     breedId?: string;
     specieId?: string;
@@ -35,6 +36,7 @@ export type GetPetPetsResponses = {
         birthdate: string;
         observations: string | null;
         sex: "MALE" | "FEMALE" | "UNKNOWN";
+        status: "ACTIVE" | "INACTIVE" | "ADOPTED";
         mainImageId: string | null;
         breedId: string;
         specieId: string;
@@ -68,6 +70,7 @@ export type PostPetPetsData = {
     name: string;
     birthdate: string;
     observations?: string;
+    status: "ACTIVE" | "INACTIVE" | "ADOPTED";
     sex: "MALE" | "FEMALE" | "UNKNOWN";
     mainImageId?: string;
     breedId: string;
@@ -120,6 +123,7 @@ export type PostPetPetsResponses = {
     birthdate: string;
     observations: string | null;
     sex: "MALE" | "FEMALE" | "UNKNOWN";
+    status: "ACTIVE" | "INACTIVE" | "ADOPTED";
     mainImageId: string | null;
     breedId: string;
     specieId: string;
@@ -142,6 +146,135 @@ export type PostPetPetsResponses = {
 
 export type PostPetPetsResponse =
   PostPetPetsResponses[keyof PostPetPetsResponses];
+
+export type PutPetPetsData = {
+  body: {
+    id: string;
+    name: string;
+    birthdate: string;
+    observations?: string;
+    status: "ACTIVE" | "INACTIVE" | "ADOPTED";
+    sex: "MALE" | "FEMALE" | "UNKNOWN";
+    mainImageId?: string;
+    breedId: string;
+    specieId: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/pet/pets";
+};
+
+export type PutPetPetsErrors = {
+  /**
+   * Bad Request
+   */
+  400:
+    | {
+        name: "SpecieNotFoundError";
+        message: "Specie not found";
+      }
+    | {
+        name: "BreedNotFoundError";
+        message: "Breed not found";
+      }
+    | {
+        name: "InvalidBreedSpecieError";
+        message: "Breed does not belong to the specified specie";
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    name: "Unauthorized";
+    message: "Unauthorized";
+  };
+  /**
+   * Not Found
+   */
+  404: unknown;
+  /**
+   * Validation Error
+   */
+  422: unknown;
+};
+
+export type PutPetPetsError = PutPetPetsErrors[keyof PutPetPetsErrors];
+
+export type PutPetPetsResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string;
+    name: string;
+    birthdate: string;
+    observations: string | null;
+    sex: "MALE" | "FEMALE" | "UNKNOWN";
+    status: "ACTIVE" | "INACTIVE" | "ADOPTED";
+    mainImageId: string | null;
+    breedId: string;
+    specieId: string;
+  } & {
+    images: Array<{
+      id: string;
+      src: string;
+    }>;
+    breed: {
+      id: string;
+      name: string;
+      specieId: string;
+    };
+    specie: {
+      id: string;
+      name: string;
+    };
+  };
+};
+
+export type PutPetPetsResponse = PutPetPetsResponses[keyof PutPetPetsResponses];
+
+export type DeletePetPetsByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/pet/pets/{id}";
+};
+
+export type DeletePetPetsByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: {
+    name: "Unauthorized";
+    message: "Unauthorized";
+  };
+  /**
+   * Pet not found
+   */
+  404: {
+    name: "PetNotFoundError";
+    message: "Pet not found";
+  };
+  /**
+   * Validation Error
+   */
+  422: unknown;
+};
+
+export type DeletePetPetsByIdError =
+  DeletePetPetsByIdErrors[keyof DeletePetPetsByIdErrors];
+
+export type DeletePetPetsByIdResponses = {
+  /**
+   * Success
+   */
+  204: void;
+};
+
+export type DeletePetPetsByIdResponse =
+  DeletePetPetsByIdResponses[keyof DeletePetPetsByIdResponses];
 
 export type GetPetPetsByIdData = {
   body?: never;
@@ -179,6 +312,7 @@ export type GetPetPetsByIdResponses = {
     birthdate: string;
     observations: string | null;
     sex: "MALE" | "FEMALE" | "UNKNOWN";
+    status: "ACTIVE" | "INACTIVE" | "ADOPTED";
     mainImageId: string | null;
     breedId: string;
     specieId: string;
@@ -251,6 +385,46 @@ export type PostPetPetsByIdImagesResponses = {
 
 export type PostPetPetsByIdImagesResponse =
   PostPetPetsByIdImagesResponses[keyof PostPetPetsByIdImagesResponses];
+
+export type DeletePetPetsImagesByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/pet/pets/images/{id}";
+};
+
+export type DeletePetPetsImagesByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: {
+    name: "Unauthorized";
+    message: "Unauthorized";
+  };
+  /**
+   * Image not found
+   */
+  404: unknown;
+  /**
+   * Validation Error
+   */
+  422: unknown;
+};
+
+export type DeletePetPetsImagesByIdError =
+  DeletePetPetsImagesByIdErrors[keyof DeletePetPetsImagesByIdErrors];
+
+export type DeletePetPetsImagesByIdResponses = {
+  /**
+   * Success
+   */
+  204: void;
+};
+
+export type DeletePetPetsImagesByIdResponse =
+  DeletePetPetsImagesByIdResponses[keyof DeletePetPetsImagesByIdResponses];
 
 export type PostPetBreedsData = {
   body: {
@@ -360,6 +534,49 @@ export type PutPetBreedsResponses = {
 
 export type PutPetBreedsResponse =
   PutPetBreedsResponses[keyof PutPetBreedsResponses];
+
+export type DeletePetBreedsByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/pet/breeds/{id}";
+};
+
+export type DeletePetBreedsByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: {
+    name: "Unauthorized";
+    message: "Unauthorized";
+  };
+  /**
+   * Breed not found
+   */
+  404: {
+    name: "BreedNotFoundError";
+    message: "Breed not found";
+  };
+  /**
+   * Validation error
+   */
+  422: unknown;
+};
+
+export type DeletePetBreedsByIdError =
+  DeletePetBreedsByIdErrors[keyof DeletePetBreedsByIdErrors];
+
+export type DeletePetBreedsByIdResponses = {
+  /**
+   * Success
+   */
+  204: void;
+};
+
+export type DeletePetBreedsByIdResponse =
+  DeletePetBreedsByIdResponses[keyof DeletePetBreedsByIdResponses];
 
 export type GetPetSpeciesByIdBreedsData = {
   body?: never;
@@ -512,6 +729,52 @@ export type PutPetSpeciesResponses = {
 
 export type PutPetSpeciesResponse =
   PutPetSpeciesResponses[keyof PutPetSpeciesResponses];
+
+export type DeletePetSpeciesByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/pet/species/{id}";
+};
+
+export type DeletePetSpeciesByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: {
+    name: "Unauthorized";
+    message: "Unauthorized";
+  };
+  /**
+   * Specie not found
+   */
+  404: {
+    name: "SpecieNotFoundError";
+    message: "Specie not found";
+  };
+  /**
+   * Validation Error
+   */
+  422: unknown;
+};
+
+export type DeletePetSpeciesByIdError =
+  DeletePetSpeciesByIdErrors[keyof DeletePetSpeciesByIdErrors];
+
+export type DeletePetSpeciesByIdResponses = {
+  /**
+   * Success
+   */
+  200: {
+    id: string;
+    name: string;
+  };
+};
+
+export type DeletePetSpeciesByIdResponse =
+  DeletePetSpeciesByIdResponses[keyof DeletePetSpeciesByIdResponses];
 
 export type PostHealthPatientsData = {
   body: {

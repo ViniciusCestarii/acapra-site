@@ -1,6 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
 import { getPetPetsOptions } from "../client/@tanstack/react-query.gen";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PetItem from "./pet-item";

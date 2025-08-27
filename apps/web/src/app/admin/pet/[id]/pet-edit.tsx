@@ -3,73 +3,79 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pet } from "@/types/pet";
-import PetSexIcon from "./pet-sex-icon";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import ClearInput from "@/components/ui/clean-input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { postPetPets } from "@/client";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import PetSexSelect from "@/app/pet-sex-select";
+import PetSpecieSelect from "@/app/pet-specie-select";
+import BreedSelect from "@/app/pet-breed-select";
+import { putPetPets } from "@/client";
 
 interface PetEditWrapperProps {
   pet: Pet;
 }
 
+const formSchema = z.object({
+  name: z.string().min(1, "O nome é obrigatório"),
+  sex: z.enum(["MALE", "FEMALE", "UNKNOWN"]),
+  birthdate: z.string(),
+  observations: z.string().optional(),
+  specieId: z.string(),
+  breedId: z.string(),
+});
+
 const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const [petData, setPetData] = useState<Pet>(pet);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: pet.name,
+      sex: pet.sex,
+      birthdate: new Date(pet.birthdate).toISOString().split("T")[0],
+      observations: pet.observations || "",
+      specieId: pet.specieId,
+      breedId: pet.breedId,
+    },
+  });
 
-  const handleCancel = () => {
-    setPetData(pet);
-    setIsEditing(false);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setPetData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setPetData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = async () => {
+  const handleSave = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      const updated = await postPetPets({
+      const updated = await putPetPets({
         body: {
-          name: petData.name,
-          birthdate: petData.birthdate,
-          observations: petData.observations || undefined,
-          sex: petData.sex as "MALE" | "FEMALE" | "UNKNOWN",
-          mainImageId: petData.mainImageId || undefined,
-          breedId: petData.breedId,
-          specieId: petData.specieId,
+          id: pet.id,
+          name: values.name,
+          status: pet.status,
+          birthdate: values.birthdate,
+          observations: values.observations || undefined,
+          sex: values.sex,
+          mainImageId: pet.mainImageId || undefined,
+          breedId: values.breedId,
+          specieId: values.specieId,
         },
       });
 
       if (updated.data) {
-        alert("Pet updated successfully");
-
+        alert("Pet atualizado com sucesso");
         router.refresh();
         setIsEditing(false);
       }
     } catch (error) {
       console.error("Failed to update pet:", error);
-      alert("Failed to update pet");
+      alert("Erro ao atualizar pet");
     } finally {
       setIsLoading(false);
     }
@@ -78,107 +84,96 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
   return (
     <div className="flex flex-col space-y-4">
       {isEditing ? (
-        <>
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Nome
-              </label>
-              <Input
-                id="name"
-                name="name"
-                value={petData.name || ""}
-                onChange={handleChange}
-                className="mt-1"
-              />
-            </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSave)} className="space-y-4">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <ClearInput {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-            <div>
-              <label
-                htmlFor="sex"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Sexo
-              </label>
-              <Select
-                value={petData.sex}
-                onValueChange={(value) => handleSelectChange("sex", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select sex" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="MALE">Masculino</SelectItem>
-                  <SelectItem value="FEMALE">Feminino</SelectItem>
-                  <SelectItem value="UNKNOWN">Desconhecido</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <PetSexSelect
+              sex={form.watch("sex")}
+              setSex={(sex) => form.setValue("sex", sex)}
+            />
 
-            <div>
-              <label
-                htmlFor="birthdate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Data de Nascimento
-              </label>
-              <Input
-                id="birthdate"
-                name="birthdate"
-                type="date"
-                value={
-                  petData.birthdate
-                    ? new Date(petData.birthdate).toISOString().split("T")[0]
-                    : ""
-                }
-                onChange={handleChange}
-                className="mt-1"
-              />
-            </div>
+            <FormField
+              name="birthdate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data de Nascimento</FormLabel>
+                  <FormControl>
+                    <input
+                      type="date"
+                      {...field}
+                      className="border rounded-md px-2 py-1 w-full"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-            <div>
-              <label
-                htmlFor="observations"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Observações
-              </label>
-              <Textarea
-                id="observations"
-                name="observations"
-                value={petData.observations || ""}
-                onChange={handleChange}
-                className="mt-1"
-                rows={4}
-              />
-            </div>
-          </div>
+            <FormField
+              name="observations"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Observações</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} rows={4} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-          <div className="flex space-x-4 pt-4 pb-4">
-            <Button
-              onClick={handleSave}
-              disabled={isLoading}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              {isLoading ? "Salvando..." : "Salvar Alterações"}
-            </Button>
-            <Button onClick={handleCancel} variant="outline">
-              Cancelar
-            </Button>
-          </div>
-        </>
+            <PetSpecieSelect
+              specie={form.watch("specieId")}
+              setSpecie={(specie) => {
+                form.setValue("specieId", specie);
+                form.setValue("breedId", "");
+              }}
+            />
+
+            <BreedSelect
+              specie={form.watch("specieId")}
+              breed={form.watch("breedId")}
+              setBreed={(breed) => form.setValue("breedId", breed)}
+            />
+
+            <div className="flex space-x-4 pt-4 pb-4">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                {isLoading ? "Salvando..." : "Salvar Alterações"}
+              </Button>
+              <Button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                variant="outline"
+              >
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        </Form>
       ) : (
         <>
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-5xl leading-9 flex items-end">
               {pet.name}
-              <PetSexIcon sex={pet.sex} className="size-6 p-1 -mb-1" />
             </h1>
             <Button
-              onClick={handleEdit}
+              onClick={() => setIsEditing(true)}
               className="bg-purple-600 hover:bg-purple-700"
             >
               Editar Pet
@@ -188,7 +183,9 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
           <div>
             <div className="text-base">
               <strong>Data de Nascimento:</strong>{" "}
-              {new Date(pet.birthdate).toLocaleDateString()}
+              {pet.birthdate
+                ? new Date(pet.birthdate).toLocaleDateString()
+                : "—"}
             </div>
             <div className="text-base">
               <strong>Raça:</strong> {pet.breed.name}

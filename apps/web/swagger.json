@@ -78,6 +78,22 @@
                             }
                           ]
                         },
+                        "status": {
+                          "anyOf": [
+                            {
+                              "const": "ACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "INACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "ADOPTED",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "mainImageId": {
                           "anyOf": [
                             {
@@ -104,6 +120,7 @@
                         "birthdate",
                         "observations",
                         "sex",
+                        "status",
                         "mainImageId",
                         "breedId",
                         "specieId"
@@ -289,6 +306,23 @@
                   "observations": {
                     "type": "string"
                   },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
                   "sex": {
                     "default": "UNKNOWN",
                     "anyOf": [
@@ -322,6 +356,7 @@
                 "required": [
                   "name",
                   "birthdate",
+                  "status",
                   "sex",
                   "breedId",
                   "specieId"
@@ -342,6 +377,23 @@
                   "observations": {
                     "type": "string"
                   },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
                   "sex": {
                     "default": "UNKNOWN",
                     "anyOf": [
@@ -375,6 +427,7 @@
                 "required": [
                   "name",
                   "birthdate",
+                  "status",
                   "sex",
                   "breedId",
                   "specieId"
@@ -395,6 +448,23 @@
                   "observations": {
                     "type": "string"
                   },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
                   "sex": {
                     "default": "UNKNOWN",
                     "anyOf": [
@@ -428,6 +498,512 @@
                 "required": [
                   "name",
                   "birthdate",
+                  "status",
+                  "sex",
+                  "breedId",
+                  "specieId"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [],
+        "operationId": "putPetPets",
+        "summary": "Update pet",
+        "description": "Update a pet",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "format": "uuid",
+                          "type": "string"
+                        },
+                        "name": {
+                          "maxLength": 255,
+                          "type": "string"
+                        },
+                        "birthdate": {
+                          "type": "string"
+                        },
+                        "observations": {
+                          "anyOf": [
+                            {
+                              "maxLength": 1024,
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "sex": {
+                          "anyOf": [
+                            {
+                              "const": "MALE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "FEMALE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "UNKNOWN",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "status": {
+                          "anyOf": [
+                            {
+                              "const": "ACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "INACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "ADOPTED",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "mainImageId": {
+                          "anyOf": [
+                            {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "breedId": {
+                          "format": "uuid",
+                          "type": "string"
+                        },
+                        "specieId": {
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "birthdate",
+                        "observations",
+                        "sex",
+                        "status",
+                        "mainImageId",
+                        "breedId",
+                        "specieId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "images": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "src": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "src"
+                            ]
+                          }
+                        },
+                        "breed": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            },
+                            "specieId": {
+                              "format": "uuid",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "specieId"
+                          ]
+                        },
+                        "specie": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "name": {
+                              "maxLength": 255,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "images",
+                        "breed",
+                        "specie"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "SpecieNotFoundError",
+                          "type": "string"
+                        },
+                        "message": {
+                          "const": "Specie not found",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "message"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "BreedNotFoundError",
+                          "type": "string"
+                        },
+                        "message": {
+                          "const": "Breed not found",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "message"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "const": "InvalidBreedSpecieError",
+                          "type": "string"
+                        },
+                        "message": {
+                          "const": "Breed does not belong to the specified specie",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "message"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "specieId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "birthdate",
+                  "status",
+                  "sex",
+                  "breedId",
+                  "specieId"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "specieId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "birthdate",
+                  "status",
+                  "sex",
+                  "breedId",
+                  "specieId"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthdate": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "observations": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "default": "ACTIVE",
+                    "anyOf": [
+                      {
+                        "const": "ACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "INACTIVE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ADOPTED",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "sex": {
+                    "default": "UNKNOWN",
+                    "anyOf": [
+                      {
+                        "const": "MALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "FEMALE",
+                        "type": "string"
+                      },
+                      {
+                        "const": "UNKNOWN",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "mainImageId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "breedId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "specieId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "birthdate",
+                  "status",
                   "sex",
                   "breedId",
                   "specieId"
@@ -487,6 +1063,27 @@
             },
             "in": "query",
             "name": "name",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "ACTIVE",
+                  "type": "string"
+                },
+                {
+                  "const": "INACTIVE",
+                  "type": "string"
+                },
+                {
+                  "const": "ADOPTED",
+                  "type": "string"
+                }
+              ]
+            },
+            "in": "query",
+            "name": "status",
             "required": false
           },
           {
@@ -611,6 +1208,22 @@
                                   }
                                 ]
                               },
+                              "status": {
+                                "anyOf": [
+                                  {
+                                    "const": "ACTIVE",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "const": "INACTIVE",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "const": "ADOPTED",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
                               "mainImageId": {
                                 "anyOf": [
                                   {
@@ -637,6 +1250,7 @@
                               "birthdate",
                               "observations",
                               "sex",
+                              "status",
                               "mainImageId",
                               "breedId",
                               "specieId"
@@ -797,6 +1411,22 @@
                             }
                           ]
                         },
+                        "status": {
+                          "anyOf": [
+                            {
+                              "const": "ACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "INACTIVE",
+                              "type": "string"
+                            },
+                            {
+                              "const": "ADOPTED",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "mainImageId": {
                           "anyOf": [
                             {
@@ -823,6 +1453,7 @@
                         "birthdate",
                         "observations",
                         "sex",
+                        "status",
                         "mainImageId",
                         "breedId",
                         "specieId"
@@ -896,6 +1527,81 @@
                         "specie"
                       ]
                     }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "PetNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Pet not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error"
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "deletePetPetsById",
+        "summary": "Delete pet",
+        "description": "Delete a pet by its id",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
                   ]
                 }
               }
@@ -1084,6 +1790,62 @@
                 ]
               }
             }
+          }
+        }
+      }
+    },
+    "/pet/pets/images/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "deletePetPetsImagesById",
+        "summary": "Delete pet image",
+        "description": "Delete a pet image",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "422": {
+            "description": "Validation Error"
           }
         }
       }
@@ -1449,6 +2211,83 @@
                 ]
               }
             }
+          }
+        }
+      }
+    },
+    "/pet/breeds/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "deletePetBreedsById",
+        "summary": "Delete a breed",
+        "description": "Delete a breed by its id",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Breed not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "BreedNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Breed not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
           }
         }
       }
@@ -1845,6 +2684,104 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/pet/species/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "deletePetSpeciesById",
+        "summary": "Delete specie",
+        "description": "Delete a specie",
+        "tags": [
+          "Pet"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 255,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Unauthorized",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Specie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "const": "SpecieNotFoundError",
+                      "type": "string"
+                    },
+                    "message": {
+                      "const": "Specie not found",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error"
           }
         }
       }
@@ -2452,6 +3389,8 @@
     }
   },
   "components": {
-    "schemas": {}
+    "schemas": {
+
+    }
   }
 }
