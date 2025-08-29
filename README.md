@@ -1,12 +1,19 @@
 # Acapra Site
 
-Acapra Site is a web application that allows users to create, edit, and manage pets.
+Acapra Site is a web application that allows users to create, edit, and manage pets, and also try to match the pets to a new owner and home.
 
 ![Acapra Login](./images/acapra-login.png)
 
 ![Acapra Home](./images/acapra-pet-list.png)
 
 ![Acapra Pet](./images/acapra-pet.png)
+
+## Prerequisites
+
+[Bun](https://bun.sh/) >= 1.1.0
+[Node.js](https://nodejs.org/) >= 18 (optional, only if you use Node together with Bun)
+[PostgreSQL](https://www.postgresql.org/) or another supported database
+Git
 
 ## Getting Started
 
