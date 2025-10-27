@@ -4,14 +4,19 @@ import {
   type Options,
   getPetPets,
   postPetPets,
+  putPetPets,
+  deletePetPetsById,
   getPetPetsById,
   postPetPetsByIdImages,
+  deletePetPetsImagesById,
   postPetBreeds,
   putPetBreeds,
+  deletePetBreedsById,
   getPetSpeciesByIdBreeds,
   getPetSpecies,
   postPetSpecies,
   putPetSpecies,
+  deletePetSpeciesById,
   postHealthPatients,
   postAuthUsersRegister,
   postAuthUsersLogin,
@@ -30,16 +35,28 @@ import type {
   PostPetPetsData,
   PostPetPetsError,
   PostPetPetsResponse,
+  PutPetPetsData,
+  PutPetPetsError,
+  PutPetPetsResponse,
+  DeletePetPetsByIdData,
+  DeletePetPetsByIdError,
+  DeletePetPetsByIdResponse,
   GetPetPetsByIdData,
   PostPetPetsByIdImagesData,
   PostPetPetsByIdImagesError,
   PostPetPetsByIdImagesResponse,
+  DeletePetPetsImagesByIdData,
+  DeletePetPetsImagesByIdError,
+  DeletePetPetsImagesByIdResponse,
   PostPetBreedsData,
   PostPetBreedsError,
   PostPetBreedsResponse,
   PutPetBreedsData,
   PutPetBreedsError,
   PutPetBreedsResponse,
+  DeletePetBreedsByIdData,
+  DeletePetBreedsByIdError,
+  DeletePetBreedsByIdResponse,
   GetPetSpeciesByIdBreedsData,
   GetPetSpeciesData,
   PostPetSpeciesData,
@@ -48,6 +65,9 @@ import type {
   PutPetSpeciesData,
   PutPetSpeciesError,
   PutPetSpeciesResponse,
+  DeletePetSpeciesByIdData,
+  DeletePetSpeciesByIdError,
+  DeletePetSpeciesByIdResponse,
   PostHealthPatientsData,
   PostHealthPatientsError,
   PostHealthPatientsResponse,
@@ -234,6 +254,46 @@ export const postPetPetsMutation = (
   return mutationOptions;
 };
 
+export const putPetPetsMutation = (
+  options?: Partial<Options<PutPetPetsData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    PutPetPetsResponse,
+    PutPetPetsError,
+    Options<PutPetPetsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putPetPets({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deletePetPetsByIdMutation = (
+  options?: Partial<Options<DeletePetPetsByIdData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeletePetPetsByIdResponse,
+    DeletePetPetsByIdError,
+    Options<DeletePetPetsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deletePetPetsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getPetPetsByIdQueryKey = (options: Options<GetPetPetsByIdData>) =>
   createQueryKey("getPetPetsById", options);
 
@@ -293,6 +353,26 @@ export const postPetPetsByIdImagesMutation = (
   return mutationOptions;
 };
 
+export const deletePetPetsImagesByIdMutation = (
+  options?: Partial<Options<DeletePetPetsImagesByIdData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeletePetPetsImagesByIdResponse,
+    DeletePetPetsImagesByIdError,
+    Options<DeletePetPetsImagesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deletePetPetsImagesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const postPetBreedsQueryKey = (options: Options<PostPetBreedsData>) =>
   createQueryKey("postPetBreeds", options);
 
@@ -341,6 +421,26 @@ export const putPetBreedsMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await putPetBreeds({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deletePetBreedsByIdMutation = (
+  options?: Partial<Options<DeletePetBreedsByIdData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeletePetBreedsByIdResponse,
+    DeletePetBreedsByIdError,
+    Options<DeletePetBreedsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deletePetBreedsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -438,6 +538,26 @@ export const putPetSpeciesMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await putPetSpecies({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deletePetSpeciesByIdMutation = (
+  options?: Partial<Options<DeletePetSpeciesByIdData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeletePetSpeciesByIdResponse,
+    DeletePetSpeciesByIdError,
+    Options<DeletePetSpeciesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deletePetSpeciesById({
         ...options,
         ...localOptions,
         throwOnError: true,

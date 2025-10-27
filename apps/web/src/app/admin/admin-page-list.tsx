@@ -45,16 +45,16 @@ const PetList = () => {
         maxBirthdate:
           specie && age
             ? getDateMonthsAgo(
-              petAgeDict["Gato" as AcapraSpecies]?.[age]?.min ?? 0,
-            )
+                petAgeDict["Gato" as AcapraSpecies]?.[age]?.min ?? 0,
+              )
             : undefined,
         minBirthdate:
           specie && age
             ? petAgeDict["Gato" as AcapraSpecies]?.[age]?.max === Infinity
               ? undefined
               : getDateMonthsAgo(
-                petAgeDict["Gato" as AcapraSpecies]?.[age]?.max ?? 0,
-              )
+                  petAgeDict["Gato" as AcapraSpecies]?.[age]?.max ?? 0,
+                )
             : undefined,
       },
     }),
@@ -97,7 +97,10 @@ const PetList = () => {
               <span className="text-sm font-medium">Página {page}</span>
               <Button
                 onClick={incrementPage}
-                disabled={!petListQuery.data || page * pageSize >= petListQuery.data.total}
+                disabled={
+                  !petListQuery.data ||
+                  page * pageSize >= petListQuery.data.total
+                }
                 variant="outline"
                 size="sm"
               >
@@ -122,21 +125,22 @@ const PetList = () => {
 
 interface PetListProps {
   data:
-  | {
-    pets: Pet[];
-  }
-  | undefined;
+    | {
+        pets: Pet[];
+      }
+    | undefined;
   isLoading: boolean;
   isError: boolean;
   pageSize: number;
 }
 
 const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
-  if (isError) return (
-    <div className="text-center p-8 bg-red-50 rounded-lg">
-      <p className="text-red-500 font-medium">Ops, ocorreu um erro!</p>
-    </div>
-  );
+  if (isError)
+    return (
+      <div className="text-center p-8 bg-red-50 rounded-lg">
+        <p className="text-red-500 font-medium">Ops, ocorreu um erro!</p>
+      </div>
+    );
 
   if (isLoading)
     return (
@@ -155,12 +159,17 @@ const PetListBase = ({ data, isLoading, isError, pageSize }: PetListProps) => {
       </div>
     );
 
-  if (!data?.pets?.length) return (
-    <div className="text-center p-12 bg-gray-50 rounded-lg">
-      <p className="text-gray-500">Nenhum pet encontrado com esses critérios.</p>
-      <p className="text-gray-400 text-sm mt-2">Tente ajustar os filtros de busca.</p>
-    </div>
-  );
+  if (!data?.pets?.length)
+    return (
+      <div className="text-center p-12 bg-gray-50 rounded-lg">
+        <p className="text-gray-500">
+          Nenhum pet encontrado com esses critérios.
+        </p>
+        <p className="text-gray-400 text-sm mt-2">
+          Tente ajustar os filtros de busca.
+        </p>
+      </div>
+    );
 
   return (
     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">

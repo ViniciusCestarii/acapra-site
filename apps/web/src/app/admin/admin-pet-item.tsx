@@ -32,8 +32,7 @@ const PetItem = ({ pet }: PetItem) => {
           className="absolute bottom-14 right-0 z-10 bg-primary p-1 rounded-bl-lg rounded-tr-lg"
         />
 
-        <div className="-mt-4 relative z-10 rounded-lg p-2 bg-primary //group-even:bg-red-500 //bg-amber-500">
-          {/* these commented classes are the actual figma design but I prefer the bg-primary */}
+        <div className="-mt-4 relative z-10 rounded-lg p-2 group-even:bg-red-500 bg-amber-500">
           <Dog className="size-8" />
         </div>
 

@@ -10,10 +10,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.includes("/admin")) {
-    if (!token?.value) return NextResponse.redirect(new URL("/login", request.url));
+    if (!token?.value)
+      return NextResponse.redirect(new URL("/login", request.url));
 
     const tokenPayload = await verifyToken(token.value);
-    if (!tokenPayload) return NextResponse.redirect(new URL("/login", request.url));
+    if (!tokenPayload)
+      return NextResponse.redirect(new URL("/login", request.url));
     if (tokenPayload) {
       return NextResponse.next();
     }

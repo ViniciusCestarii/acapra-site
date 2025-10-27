@@ -13,18 +13,30 @@ import type {
   PostPetPetsData,
   PostPetPetsResponse,
   PostPetPetsError,
+  PutPetPetsData,
+  PutPetPetsResponse,
+  PutPetPetsError,
+  DeletePetPetsByIdData,
+  DeletePetPetsByIdResponse,
+  DeletePetPetsByIdError,
   GetPetPetsByIdData,
   GetPetPetsByIdResponse,
   GetPetPetsByIdError,
   PostPetPetsByIdImagesData,
   PostPetPetsByIdImagesResponse,
   PostPetPetsByIdImagesError,
+  DeletePetPetsImagesByIdData,
+  DeletePetPetsImagesByIdResponse,
+  DeletePetPetsImagesByIdError,
   PostPetBreedsData,
   PostPetBreedsResponse,
   PostPetBreedsError,
   PutPetBreedsData,
   PutPetBreedsResponse,
   PutPetBreedsError,
+  DeletePetBreedsByIdData,
+  DeletePetBreedsByIdResponse,
+  DeletePetBreedsByIdError,
   GetPetSpeciesByIdBreedsData,
   GetPetSpeciesByIdBreedsResponse,
   GetPetSpeciesByIdBreedsError,
@@ -36,6 +48,9 @@ import type {
   PutPetSpeciesData,
   PutPetSpeciesResponse,
   PutPetSpeciesError,
+  DeletePetSpeciesByIdData,
+  DeletePetSpeciesByIdResponse,
+  DeletePetSpeciesByIdError,
   PostHealthPatientsData,
   PostHealthPatientsResponse,
   PostHealthPatientsError,
@@ -111,6 +126,48 @@ export const postPetPets = cache(
 );
 
 /**
+ * Update pet
+ * Update a pet
+ */
+export const putPetPets = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<PutPetPetsData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).put<
+      PutPetPetsResponse,
+      PutPetPetsError,
+      ThrowOnError
+    >({
+      url: "/pet/pets",
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+  },
+);
+
+/**
+ * Delete pet
+ * Delete a pet by its id
+ */
+export const deletePetPetsById = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<DeletePetPetsByIdData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).delete<
+      DeletePetPetsByIdResponse,
+      DeletePetPetsByIdError,
+      ThrowOnError
+    >({
+      url: "/pet/pets/{id}",
+      ...options,
+    });
+  },
+);
+
+/**
  * Find pet by id
  * Find a pet by its id
  */
@@ -148,6 +205,25 @@ export const postPetPetsByIdImages = cache(
         "Content-Type": "application/json",
         ...options?.headers,
       },
+    });
+  },
+);
+
+/**
+ * Delete pet image
+ * Delete a pet image
+ */
+export const deletePetPetsImagesById = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<DeletePetPetsImagesByIdData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).delete<
+      DeletePetPetsImagesByIdResponse,
+      DeletePetPetsImagesByIdError,
+      ThrowOnError
+    >({
+      url: "/pet/pets/images/{id}",
+      ...options,
     });
   },
 );
@@ -194,6 +270,25 @@ export const putPetBreeds = cache(
         "Content-Type": "application/json",
         ...options?.headers,
       },
+    });
+  },
+);
+
+/**
+ * Delete a breed
+ * Delete a breed by its id
+ */
+export const deletePetBreedsById = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<DeletePetBreedsByIdData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).delete<
+      DeletePetBreedsByIdResponse,
+      DeletePetBreedsByIdError,
+      ThrowOnError
+    >({
+      url: "/pet/breeds/{id}",
+      ...options,
     });
   },
 );
@@ -278,6 +373,25 @@ export const putPetSpecies = cache(
         "Content-Type": "application/json",
         ...options?.headers,
       },
+    });
+  },
+);
+
+/**
+ * Delete specie
+ * Delete a specie
+ */
+export const deletePetSpeciesById = cache(
+  <ThrowOnError extends boolean = false>(
+    options: Options<DeletePetSpeciesByIdData, ThrowOnError>,
+  ) => {
+    return (options.client ?? _heyApiClient).delete<
+      DeletePetSpeciesByIdResponse,
+      DeletePetSpeciesByIdError,
+      ThrowOnError
+    >({
+      url: "/pet/species/{id}",
+      ...options,
     });
   },
 );

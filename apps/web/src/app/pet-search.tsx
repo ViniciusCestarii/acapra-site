@@ -1,7 +1,3 @@
-import {
-  getPetSpeciesByIdBreedsOptions,
-  getPetSpeciesOptions,
-} from "@/client/@tanstack/react-query.gen";
 import ClearInput from "@/components/ui/clean-input";
 import {
   Form,
@@ -10,19 +6,9 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Pet } from "@/types/pet";
 import { Age, petAgeDict, sexDict } from "@/utils/dict";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -33,7 +19,10 @@ import {
   useSex,
   useSpecie,
 } from "./nuqs-state";
-import { AcapraSpecies, Pet } from "@/types/pet";
+import PetAgeSelect from "./pet-age-select";
+import BreedSelect from "./pet-breed-select";
+import PetSpecieSelect from "./pet-specie-select";
+import PetSexSelect from "./pet-sex-select";
 
 const formSchema = z.object({
   name: z.string().optional(),
@@ -50,23 +39,6 @@ const PetSearch = () => {
   const [breed, setBreed] = useBreed();
   const [sex, setSex] = useSex();
   const [age, setAge] = useAge();
-
-  const speciesQuery = useQuery({
-    ...getPetSpeciesOptions(),
-    staleTime: 1000 * 60 * 3,
-    placeholderData: keepPreviousData,
-  });
-
-  const breedQuery = useQuery({
-    ...getPetSpeciesByIdBreedsOptions({
-      path: {
-        id: specie,
-      },
-    }),
-    staleTime: 1000 * 60 * 3,
-    enabled: !!specie,
-    placeholderData: keepPreviousData,
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,162 +69,39 @@ const PetSearch = () => {
           )}
         />
 
-        <FormField
-          name="specie"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Espécie</FormLabel>
-              <Select
-                value={specie}
-                onValueChange={(value) => {
-                  setPage(1);
-                  setSpecie(value);
-                  setBreed("");
-                  setAge("");
-                }}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione uma espécie" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Espécies</SelectLabel>
-                    {speciesQuery.data?.map((specie) => (
-                      <SelectItem key={specie.id} value={specie.id}>
-                        {specie.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
+        <PetSpecieSelect
+          specie={specie}
+          setSpecie={(specie) => {
+            setPage(1);
+            setSpecie(specie);
+            setBreed("");
+          }}
         />
 
-        <FormField
-          name="breed"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Raça</FormLabel>
-              <FormControl>
-                <Select
-                  value={breed}
-                  onValueChange={(value) => {
-                    setPage(1);
-                    setBreed(value);
-                  }}
-                  disabled={!specie}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={
-                          specie
-                            ? "Selecione uma raça"
-                            : "Selecione um espécie primeiro"
-                        }
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Raças</SelectLabel>
-                      {breedQuery.data?.map((breed) => (
-                        <SelectItem key={breed.id} value={breed.id}>
-                          {breed.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
+        <BreedSelect
+          specie={specie}
+          breed={breed}
+          setBreed={(breed) => {
+            setPage(1);
+            setBreed(breed);
+          }}
         />
 
-        <FormField
-          name="sex"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Sexo</FormLabel>
-              <FormControl>
-                <Select
-                  value={sex}
-                  onValueChange={(value) => {
-                    setPage(1);
-                    setSex(value as Pet["sex"]);
-                  }}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione um sexo" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Sexos</SelectLabel>
-                      {Object.keys(sexDict).map((sex) => (
-                        <SelectItem key={sex} value={sex}>
-                          {sexDict[sex as Pet["sex"]]}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
+        <PetSexSelect
+          sex={sex}
+          setSex={(sex) => {
+            setPage(1);
+            setSex(sex);
+          }}
         />
 
-        <FormField
-          name="age"
-          control={form.control}
-          render={() => (
-            <FormItem>
-              <FormLabel>Idade</FormLabel>
-              <FormControl>
-                <Select
-                  value={age}
-                  onValueChange={(value) => {
-                    setPage(1);
-                    setAge(value as Age);
-                  }}
-                  disabled={
-                    !specie || petAgeDict[specie as AcapraSpecies] === undefined
-                  }
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder={
-                          specie
-                            ? petAgeDict[specie as AcapraSpecies]
-                              ? "Selecione uma idade"
-                              : "Espécie não suportada"
-                            : "Selecione um espécie primeiro"
-                        }
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Idades</SelectLabel>
-                      {Object.keys(petAgeDict.Gato).map((age) => (
-                        <SelectItem key={age} value={age}>
-                          {age}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
+        <PetAgeSelect
+          specie={specie}
+          age={age}
+          setAge={(age) => {
+            setPage(1);
+            setAge(age);
+          }}
         />
       </form>
     </Form>
