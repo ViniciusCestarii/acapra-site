@@ -20,6 +20,7 @@ import PetSexSelect from "@/app/pet-sex-select";
 import PetSpecieSelect from "@/app/pet-specie-select";
 import BreedSelect from "@/app/pet-breed-select";
 import { putPetPets } from "@/client";
+import { toast } from "sonner";
 
 interface PetEditWrapperProps {
   pet: Pet;
@@ -69,13 +70,13 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
       });
 
       if (updated.data) {
-        alert("Pet atualizado com sucesso");
+        toast.success("Pet atualizado com sucesso");
         router.refresh();
         setIsEditing(false);
       }
     } catch (error) {
       console.error("Failed to update pet:", error);
-      alert("Erro ao atualizar pet");
+      toast.error("Erro ao atualizar pet");
     } finally {
       setIsLoading(false);
     }
