@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import PetSexIcon from "./pet-sex-icon";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
 
 interface PetPageProps {
   params: Promise<{ id: string }>;
@@ -90,11 +91,24 @@ const PetPage = async ({ params }: PetPageProps) => {
               })}
             </div>
           )}
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-4 pb-8">
             <h1 className="font-bold text-5xl leading-9 flex items-end">
               {pet.name}
               <PetSexIcon sex={pet.sex} className="size-6 p-1 -mb-1" />
             </h1>
+            <Button asChild>
+              <a
+                href={
+                  pet.specie.name === "Gato"
+                    ? `https://docs.google.com/forms/d/e/1FAIpQLSfnidAFGv1BBlNeC8PDzZtgIgw3_TZFqlM7EIRDUW40s8B2TA/viewform?entry.535177686=${pet.name}`
+                    : `https://docs.google.com/forms/d/e/1FAIpQLSc1CjkssT6hAI5Wtzjwa7uwiiq4anO8_Uf_Oo8sV0VWWiAmog/viewform?entry.535177686=${pet.name}`
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                Me adotar!
+              </a>
+            </Button>
             <p className="break-words">{pet.observations}</p>
           </div>
         </div>
