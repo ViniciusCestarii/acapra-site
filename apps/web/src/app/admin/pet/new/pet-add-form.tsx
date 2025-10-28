@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import ClearInput from "@/components/ui/clean-input";
 import {
@@ -33,6 +34,7 @@ const formSchema = z.object({
 
 const PetAddForm: React.FC = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -132,6 +134,15 @@ const PetAddForm: React.FC = () => {
         }
 
         toast.success("Pet cadastrado com sucesso!");
+
+        // Invalidate and refetch all getPetPets queries
+        await queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey as any;
+            return queryKey?.[0]?._id === "getPetPets";
+          },
+        });
+
         router.push(`/admin/pet/${petId}`);
       }
     } catch (error) {

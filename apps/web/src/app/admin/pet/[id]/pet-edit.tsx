@@ -142,6 +142,15 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
       }
 
       toast.success("Imagem adicionada com sucesso!");
+
+      // Invalidate and refetch all getPetPets queries
+      await queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey as any;
+          return queryKey?.[0]?._id === "getPetPets";
+        },
+      });
+
       router.refresh();
     } catch (error) {
       console.error("Failed to upload image:", error);
@@ -169,6 +178,15 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
 
       setMainImageId(imageId);
       toast.success("Imagem principal atualizada!");
+
+      // Invalidate and refetch all getPetPets queries
+      await queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey as any;
+          return queryKey?.[0]?._id === "getPetPets";
+        },
+      });
+
       router.refresh();
     } catch (error) {
       console.error("Failed to set main image:", error);
@@ -215,6 +233,15 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
       }
 
       toast.success("Imagem removida com sucesso!");
+
+      // Invalidate and refetch all getPetPets queries
+      await queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey as any;
+          return queryKey?.[0]?._id === "getPetPets";
+        },
+      });
+
       router.refresh();
     } catch (error) {
       console.error("Failed to delete image:", error);
