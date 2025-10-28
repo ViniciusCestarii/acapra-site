@@ -28,8 +28,9 @@ import { useForm } from "react-hook-form";
 import PetSexSelect from "@/app/pet-sex-select";
 import PetSpecieSelect from "@/app/pet-specie-select";
 import BreedSelect from "@/app/pet-breed-select";
-import { putPetPets, deletePetPetsById } from "@/client";
+import { putPetPets, deletePetPetsById, deletePetPetsImagesById } from "@/client";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface PetEditWrapperProps {
   pet: Pet;
@@ -46,16 +47,20 @@ const formSchema = z.object({
 
 const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [petImages, setPetImages] = useState(pet.images || []);
+  const [mainImageId, setMainImageId] = useState(pet.mainImageId);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: pet.name,
       sex: pet.sex,
-      birthdate: new Date(pet.birthdate).toISOString().split("T")[0],
+      birthdate: pet.birthdate ? new Date(pet.birthdate).toISOString().split("T")[0] : "",
       observations: pet.observations || "",
       specieId: pet.specieId,
       breedId: pet.breedId,
@@ -73,7 +78,7 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
           birthdate: values.birthdate,
           observations: values.observations || undefined,
           sex: values.sex,
-          mainImageId: pet.mainImageId || undefined,
+          mainImageId: mainImageId || undefined,
           breedId: values.breedId,
           specieId: values.specieId,
         },
@@ -81,6 +86,15 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
 
       if (updated.data) {
         toast.success("Pet atualizado com sucesso");
+
+        // Invalidate and refetch all getPetPets queries
+        await queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey as any;
+            return queryKey?.[0]?._id === "getPetPets";
+          },
+        });
+
         router.refresh();
         setIsEditing(false);
       }
@@ -89,6 +103,122 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
       toast.error("Erro ao atualizar pet");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Por favor, selecione apenas arquivos de imagem");
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333"}/pet/pets/${pet.id}/images`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const imageData = await response.json();
+      setPetImages([...petImages, imageData]);
+
+      // If this is the first image, set it as main
+      if (petImages.length === 0) {
+        setMainImageId(imageData.id);
+      }
+
+      toast.success("Imagem adicionada com sucesso!");
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+      toast.error("Erro ao fazer upload da imagem");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleSetMainImage = async (imageId: string) => {
+    try {
+      await putPetPets({
+        body: {
+          id: pet.id,
+          name: pet.name,
+          status: pet.status,
+          birthdate: pet.birthdate || "",
+          observations: pet.observations || undefined,
+          sex: pet.sex,
+          mainImageId: imageId,
+          breedId: pet.breedId,
+          specieId: pet.specieId,
+        },
+      });
+
+      setMainImageId(imageId);
+      toast.success("Imagem principal atualizada!");
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to set main image:", error);
+      toast.error("Erro ao definir imagem principal");
+    }
+  };
+
+  const handleDeleteImage = async (imageId: string) => {
+    if (!confirm("Tem certeza que deseja remover esta imagem?")) {
+      return;
+    }
+
+    try {
+      await deletePetPetsImagesById({
+        path: {
+          id: imageId,
+        },
+      });
+
+      const updatedImages = petImages.filter((img) => img.id !== imageId);
+      setPetImages(updatedImages);
+
+      // If deleted image was the main image, clear mainImageId
+      if (mainImageId === imageId) {
+        const newMainId = updatedImages.length > 0 ? (updatedImages[0]?.id ?? null) : null;
+        setMainImageId(newMainId);
+
+        // Update pet with new main image
+        if (newMainId || mainImageId) {
+          await putPetPets({
+            body: {
+              id: pet.id,
+              name: pet.name,
+              status: pet.status,
+              birthdate: pet.birthdate || "",
+              observations: pet.observations || undefined,
+              sex: pet.sex,
+              mainImageId: newMainId || undefined,
+              breedId: pet.breedId,
+              specieId: pet.specieId,
+            },
+          });
+        }
+      }
+
+      toast.success("Imagem removida com sucesso!");
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+      toast.error("Erro ao remover imagem");
     }
   };
 
@@ -166,6 +296,92 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
               breed={form.watch("breedId")}
               setBreed={(breed) => form.setValue("breedId", breed)}
             />
+
+            {/* Image Gallery Section */}
+            <div className="space-y-4 border-t pt-4">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Imagens do Pet</h3>
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    id="pet-image-upload-edit"
+                    disabled={uploadingImage}
+                  />
+                  <label htmlFor="pet-image-upload-edit">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={uploadingImage}
+                      className="bg-blue-50 hover:bg-blue-100 cursor-pointer"
+                      asChild
+                    >
+                      <span>
+                        {uploadingImage ? "Enviando..." : "Adicionar Imagem"}
+                      </span>
+                    </Button>
+                  </label>
+                </div>
+              </div>
+
+              {petImages.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {petImages.map((image) => (
+                    <div
+                      key={image.id}
+                      className={`relative rounded-lg overflow-hidden border-2 ${
+                        mainImageId === image.id
+                          ? "border-green-500 ring-2 ring-green-200"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <div className="relative aspect-square">
+                        <Image
+                          src={image.src}
+                          alt="Pet image"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      {mainImageId === image.id && (
+                        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                          Principal
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 flex gap-1">
+                        {mainImageId !== image.id && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => handleSetMainImage(image.id)}
+                            className="flex-1 h-7 text-xs bg-white/90 hover:bg-white text-black"
+                          >
+                            Definir Principal
+                          </Button>
+                        )}
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => handleDeleteImage(image.id)}
+                          variant="destructive"
+                          className="h-7 text-xs"
+                        >
+                          Remover
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
+                  <p className="text-gray-500 text-sm">
+                    Nenhuma imagem adicionada ainda
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="flex space-x-4 pt-4 pb-4">
               <Button
