@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import PetList from "./pet-list";
+import PetList from "../pet-list";
 import AdminButton from "@/components/admin-button";
 
 export default function Home() {
