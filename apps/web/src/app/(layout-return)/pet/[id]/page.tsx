@@ -6,6 +6,8 @@ import React from "react";
 import PetSexIcon from "./pet-sex-icon";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
+import { sexDict, getPetAgeCategoryByBirthDate, formatPetAge } from "@/utils/dict";
+import { AcapraSpecies } from "@/types/pet";
 
 interface PetPageProps {
   params: Promise<{ id: string }>;
@@ -96,6 +98,38 @@ const PetPage = async ({ params }: PetPageProps) => {
               {pet.name}
               <PetSexIcon sex={pet.sex} className="size-6 p-1 -mb-1" />
             </h1>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="space-y-2">
+                <div>
+                  <span className="font-semibold text-gray-600">Espécie:</span>
+                  <span className="ml-2">{pet.specie.name}</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-600">Raça:</span>
+                  <span className="ml-2">{pet.breed.name}</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div>
+                  <span className="font-semibold text-gray-600">Sexo:</span>
+                  <span className="ml-2">{sexDict[pet.sex]}</span>
+                </div>
+                {pet.birthdate && (
+                  <div>
+                    <span className="font-semibold text-gray-600">Idade:</span>
+                    <span className="ml-2">
+                      {getPetAgeCategoryByBirthDate(
+                        pet.specie.name as AcapraSpecies,
+                        pet.birthdate
+                      )}
+                      {" "}({formatPetAge(pet.birthdate)})
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <Button asChild>
               <a
                 href={
@@ -109,7 +143,13 @@ const PetPage = async ({ params }: PetPageProps) => {
                 Me adotar!
               </a>
             </Button>
-            <p className="break-words">{pet.observations}</p>
+
+            {pet.observations && (
+              <div className="space-y-2">
+                <h2 className="font-semibold text-lg">Sobre mim</h2>
+                <p className="break-words text-gray-700">{pet.observations}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

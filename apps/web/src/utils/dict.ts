@@ -63,3 +63,27 @@ export const getPetAgeCategoryByBirthDate = (
   const ageInMonths = getAgeInMonths(birthDate);
   return getPetAgeCategory(type, ageInMonths) ?? "Idoso";
 };
+
+export const formatPetAge = (birthDate: string | Date): string => {
+  const ageInMonths = getAgeInMonths(birthDate);
+
+  if (ageInMonths < 1) {
+    return "Menos de 1 mês";
+  }
+
+  if (ageInMonths < 12) {
+    return ageInMonths === 1 ? "1 mês" : `${ageInMonths} meses`;
+  }
+
+  const years = Math.floor(ageInMonths / 12);
+  const months = ageInMonths % 12;
+
+  if (months === 0) {
+    return years === 1 ? "1 ano" : `${years} anos`;
+  }
+
+  const yearText = years === 1 ? "1 ano" : `${years} anos`;
+  const monthText = months === 1 ? "1 mês" : `${months} meses`;
+
+  return `${yearText} e ${monthText}`;
+};
