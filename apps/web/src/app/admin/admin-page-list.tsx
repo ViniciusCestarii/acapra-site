@@ -82,7 +82,7 @@ const PetList = () => {
         </aside>
 
         {/* Pet List Section */}
-        <main className="lg:w-3/4 w-full">
+        <main className="lg:w-3/4 w-full min-h-[745px]">
           {/* Pagination Controls */}
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-4">
