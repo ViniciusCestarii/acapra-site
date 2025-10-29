@@ -19,9 +19,8 @@ const AdminButton = () => {
           }
         );
 
-        // If the request succeeds (status 200), user is admin
-        if (response.ok) {
-          console.log(response);
+        // If the request succeeds (status 200) and the response URL does not include /login, user is admin
+        if (response.ok && !response.url.includes("/login")) {
           setIsAdmin(true);
         }
       } catch (error) {

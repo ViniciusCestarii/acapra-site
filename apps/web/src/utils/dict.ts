@@ -6,6 +6,12 @@ export const sexDict: Record<Pet["sex"], string> = {
   UNKNOWN: "Sexo Desconhecido",
 };
 
+export const statusDict: Record<Pet["status"], string> = {
+  ACTIVE: "Disponível para Adoção",
+  INACTIVE: "Inativo",
+  ADOPTED: "Adotado",
+};
+
 export type Age = "Filhote" | "Jovem" | "Adulto" | "Idoso";
 
 interface AgeRange {

@@ -26,6 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import PetSexSelect from "@/app/pet-sex-select";
+import PetStatusSelect from "@/app/pet-status-select";
 import PetSpecieSelect from "@/app/pet-specie-select";
 import BreedSelect from "@/app/pet-breed-select";
 import { putPetPets, deletePetPetsById, deletePetPetsImagesById } from "@/client";
@@ -39,6 +40,7 @@ interface PetEditWrapperProps {
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
   sex: z.enum(["MALE", "FEMALE", "UNKNOWN"]),
+  status: z.enum(["ACTIVE", "INACTIVE", "ADOPTED"]),
   birthdate: z.string(),
   observations: z.string().optional(),
   specieId: z.string(),
@@ -60,6 +62,7 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
     defaultValues: {
       name: pet.name,
       sex: pet.sex,
+      status: pet.status,
       birthdate: pet.birthdate ? new Date(pet.birthdate).toISOString().split("T")[0] : "",
       observations: pet.observations || "",
       specieId: pet.specieId,
@@ -74,7 +77,7 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
         body: {
           id: pet.id,
           name: values.name,
-          status: pet.status,
+          status: values.status,
           birthdate: values.birthdate,
           observations: values.observations || undefined,
           sex: values.sex,
@@ -278,6 +281,11 @@ const PetEditWrapper: React.FC<PetEditWrapperProps> = ({ pet }) => {
             <PetSexSelect
               sex={form.watch("sex")}
               setSex={(sex) => form.setValue("sex", sex)}
+            />
+
+            <PetStatusSelect
+              status={form.watch("status")}
+              setStatus={(status) => form.setValue("status", status)}
             />
 
             <FormField

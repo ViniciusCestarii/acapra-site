@@ -2,7 +2,7 @@ import React from "react";
 import { Pet } from "@/types/pet";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dog, HelpCircle, PawPrint } from "lucide-react";
+import { Cat, Dog, HelpCircle, PawPrint } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AvatarProps } from "@radix-ui/react-avatar";
 import { Tip } from "@/components/ui/tooltip";
@@ -27,7 +27,7 @@ const PetItem = ({ pet }: PetItem) => {
         />
 
         <div className="-mt-4 relative z-10 rounded-lg p-2 group-even:bg-red-500 bg-amber-500">
-          <Dog className="size-8" />
+          {pet.specie.name == "Gato" ? <Cat className="size-8" /> : <Dog className="size-8" />}
         </div>
 
         <h2>{pet.name}</h2>

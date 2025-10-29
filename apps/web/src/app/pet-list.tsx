@@ -41,6 +41,7 @@ const PetList = () => {
         specieId: specie || undefined,
         breedId: breed || undefined,
         sex: sex || undefined,
+        status: "ACTIVE",
         maxBirthdate:
           specie && age
             ? getDateMonthsAgo(
