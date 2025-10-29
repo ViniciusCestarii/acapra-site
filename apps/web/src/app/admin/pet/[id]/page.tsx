@@ -1,10 +1,11 @@
 import { getPetPetsById } from "@/client";
-import { PetAvatar, PetProfileAvatar } from "@/app/pet-item";
+import { PetProfileAvatar } from "@/app/pet-item";
 import { Pet } from "@/types/pet";
 import { notFound } from "next/navigation";
 import React from "react";
 import { Metadata } from "next";
 import PetEditWrapper from "./pet-edit";
+import { PetAvatar } from "@/app/pet-avatar";
 
 interface PetPageProps {
   params: Promise<{ id: string }>;
@@ -84,6 +85,7 @@ const PetPage = async ({ params }: PetPageProps) => {
                     key={img.id}
                     src={img.src}
                     alt={pet.name}
+                    expandable
                     avatarProps={{ className: "aspect-square" }}
                   />
                 );

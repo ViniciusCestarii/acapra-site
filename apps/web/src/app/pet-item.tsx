@@ -1,12 +1,11 @@
 import React from "react";
 import { Pet } from "@/types/pet";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Cat, Dog, HelpCircle, PawPrint } from "lucide-react";
+import { Cat, Dog, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AvatarProps } from "@radix-ui/react-avatar";
 import { Tip } from "@/components/ui/tooltip";
 import { sexDict } from "@/utils/dict";
+import { PetAvatar, PetAvatarProps } from "./pet-avatar";
 
 interface PetItem {
   pet: Pet;
@@ -54,32 +53,6 @@ export const PetProfileAvatar = ({ pet, ...props }: PetProfileAvatarProps) => {
       src={petProfileImage?.src}
       alt={pet.name}
     />
-  );
-};
-
-interface PetAvatarProps {
-  alt: string;
-  src?: string;
-  avatarProps?: AvatarProps;
-}
-
-export const PetAvatar = ({ alt, src, avatarProps }: PetAvatarProps) => {
-  return (
-    <Avatar
-      {...avatarProps}
-      className={cn(
-        "w-full h-auto rounded-[calc(var(--radius)_-_0.015rem)]",
-        avatarProps?.className,
-      )}
-    >
-      <AvatarImage src={src} alt={alt} className="object-cover" />
-      <AvatarFallback
-        delayMs={src ? 400 : undefined}
-        className="rounded-[calc(var(--radius)_-_0.015rem)] text-primary"
-      >
-        <PawPrint className="size-[25%]" />
-      </AvatarFallback>
-    </Avatar>
   );
 };
 
